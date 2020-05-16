@@ -193,3 +193,57 @@ const quickSort = nums => {
   return [...quickSort(left), pivot, ...quickSort(right)];
 };
 ```
+
+## Data Structures - Interfaces
+### Set
+Also known as Collections depending which language you're working with. A set allows allows at least four things: add, remove, contains, and toList. The basic idea is that you can add items to a set and then later check if they're there. You can also request later a list of those items in the set (though with no guaranteed order; sets have no notion of order.) They're also useful for deduplication since you can only add something to a set once. 
+
+### Map
+Maps are quite similar to simple JavaScript objects. Maps are a set/collection of keys that have values associated with those keys. Unlike objects, they don't have prototypes, inheritance, methods, or anything of that sort. Maps are also similar to associative arrays in other languages. Again, since the keys are a set, there cannot be duplication of keys. You can have duplication of values though. Key 'thing' can have value 'map' while key 'other thing' can have a value of 'map' as well. 
+
+### Stack
+Stack is an interface that adheres to the "Last-In First-Out" (LIFO) mantra. In a stack, you can only push (add) or pop (remove.) The last thing you pushed will be what pop returns to you (pop will also remove it from the stack.) Often they'll have a method called peek too which just looks at the top value of the stack without modifying the stack. 
+
+Example Function:
+```
+function double(x) { return 2 * x; }
+function squareAndAddFive(y) { return square(y) + 5; }
+function square(z) { return z * z; }
+
+function maths(num) {
+    var answer = double(num);
+    answer = squareAndAddFive(answer);
+    return answer;
+}
+
+maths(5);
+```
+
+How it works:
+```
+-> maths is called; JS pushes maths call on its call stack
+-> inside maths, double is called; JS pushes double onto its call stack
+-> doubles completes, returns value 10; JS pops double off its call stack
+-> back inside maths, squareAndAddFive is called;
+   JS pushes squareAndAddFive on its call stack
+-> inside squareAndAddFive, square is called;
+   JS pushes square on its call stack
+
+Let's look at call stack right now
+
+square
+squareAndAddFive
+maths
+main
+
+-> square completes, returns 100
+-> squareAndAddFive completes, returns 105
+-> maths completes, returns 105
+```
+
+### Queue
+Queues adhere to the "First-In First-Out" mantra. All stacks need to have the methods enqueue (add/push) and dequeue (remove/pop). Like stacks, they'll have peek to see what the next element is to dequeue. 
+
+Queues are useful for lots of programming problems. How about print jobs? Usually you want things to print in the order sent to the printer; otherwise Janice from Accounting is going to be printing all of her documents before you can print anything.
+
+There are also priority queues as well. In a priority queue you also assign a priority to the elements that are enqueued. Items that have higher priorities get dequeued first. This is useful for networking; some packets are more important than others. If you're streaming video, that gets a high priority because getting a packet later means likely skipping some frames, whereas syncing to Dropbox can wait for a lull in network traffic to continue syncing. 
