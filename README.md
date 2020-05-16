@@ -913,3 +913,89 @@ class BloomFilter {
   }
 };
 ```
+## Tree Traversals
+Trees are an essential part of storing data, or at computer scientists like to refer them as, data structures. Among their benefits is that they're optimized to be searchable. Occasionally you need to serialize the entire tree into a flat data structure. 
+
+
+### Depth-first Traversal
+One variant depth-first traversals: pre-order traversal. The basic gist is that for each of the nodes, you process the node (in our case, save it to an array since we're serializing this tree,) then process the left subtree and then the right tree.
+
+We end up with the array of [8, 3, 1, 6, 4, 7, 10, 14, 13]. This is called preorder traversal.
+
+The other variants are quite similar; the only thing we do is change the order. "process the node," mean you do whatever operation you're going to do: add it to an array, copy the node, or whatever that may be.
+
+In preorder traversal, you process the node, then recursively call the method on the left subtree and then the right subtree.
+
+In inorder traversal, you first recursively call the method on the left tree, then process the node, and then call the method on the right tree.
+
+Postorder traversal, as you have guessed, you recursively call the method on the left subtree, then the left subtree, then you process the node. The results of these are as follows:
+```
+// preorder
+[8, 3, 1, 6, 4, 7, 10, 14, 13]
+
+// inorder
+[1, 3, 5, 6, 7, 8, 10, 13, 14]
+
+// postorder
+[1, 4, 7, 6, 3, 13, 14, 10, 8]
+```
+
+For a sorted list out of a BST, you'd want to use inorder. If you're making a deep copy of a tree, preorder traversal is super useful since you'd copy a node, and then add its left child and then its right tree. Postorder would be useful if you're deleting a tree since you'd process the left tree, then the right, and only after the children had been deleted would you delete the node you're working on.
+```
+const preorderTraverse = (node, array) => {
+  if (!node) return array;
+  array.push(node.value);
+  array = preorderTraverse(node.left, array);
+  array = preorderTraverse(node.right, array);
+  return array;
+};
+
+const inorderTraverse = (node, array) => {
+  if (!node) return array;
+  array = inorderTraverse(node.left, array);
+  array.push(node.value);
+  array = inorderTraverse(node.right, array);
+  return array;
+};
+
+const postorderTraverse = (node, array) => {
+  if (!node) return array;
+  array = postorderTraverse(node.left, array);
+  array = postorderTraverse(node.right, array);
+  array.push(node.value);
+  return array;
+};
+```
+
+### Breadth-first Traversal
+Now that you've done depth-first, let's tackle breadth-first. Breadth-first isn't recursive processing of subtrees like depth-first. Instead we want to process one layer at a time. Using the tree above, we want the resulting order to [8, 3, 10, 1, 6, 14, 4, 7, 13]. In other words, we start at the root, and slowly make our way "down" the tree.
+
+The way we accomplish this is using the queue. 
+
+What we're going to do is process the node, then add the left child to the queue and then add the right child to the queue. After that, we'll just dequeue an item off of the queue and call our function recursively on that node. You keep going until there's no items left in the queue.
+```
+// recursive
+const breadthFirstTraverse = (queue, array) => {
+  if (!queue.length) return array;
+  const node = queue.shift();
+  array.push(node.value);
+  if (node.left) queue.push(node.left);
+  if (node.right) queue.push(node.right);
+  return breadthFirstTraverse(queue, array);
+}
+
+// iterative
+const breadthFirstTraverse2 = (queue, array) => {
+  if (!queue.length) return array;
+  
+  while (queue.length) {
+    const node = queue.shift();
+    array.push(node.value);
+    if (node.left) queue.push(node.left);
+    if (node.right) queue.push(node.right);
+  }
+  
+  return array;
+}
+```
+Breadth-first traversals are useful for many things, the gist of when you use them is that you know the answer for what you're looking for is "closer" to the root node as opposed to far away when you would use depth-first. Again, it's all trade-offs.
