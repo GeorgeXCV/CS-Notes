@@ -1046,3 +1046,84 @@ const findMostCommonTitle = (myId, getUser, degreesOfSeparation) => {
     })[0][0]
 }
 ```
+## Tries
+The word "trie" is a play on the fact that this particular data structure makes it easy to retrieve data, so trie is said just like it is there, tree. However, because tries and trees are often discussed together, you'll here people call them "tries" (as in the plural try) or try to disambiguate them in other methods. 
+
+It's a tree that's optimized for searching by prefix. The classic example of what you would use this for is autocomplete: you know when you type in "San" and it offers suggestions of what to finish with like "Francisco", "Diego", or "Jose". Tries are really useful for that.
+
+A trie starts with a root node that doesn't represent anything (often it's given the value of '' (empty string.) It has a bunch of child nodes (as many are necessary) that represent one letter, the first letter of all the words added to the data structure. Each of those letter-nodes will have children nodes for all the second letters of the words that are represented in the data structure. So on and so forth, there will be a chain of nodes that represent each letter in the data structure.
+
+If a user types bo in the text input, you can go through your data structure, find the o node in that chain, and then all you have to do is a depth-first traversal of the children nodes to for a list of autocomplete suggestions.
+```
+  a – [various children]
+ /
+b – o – s – t – o – n
+     \
+      i – s – e
+```
+So based on this, you'd get suggestions of "Boston" and "Boise".
+
+Since some words are contained within chains of others (for example, there are two separate cities, one called "Salina" and one called "Salinas" or "Sandy" and "Sandy Springs".) You'll often have a flag in there that signifies the node you're on is a complete word so you can just add it to the list and then keep going on the children.
+
+There are more complicated things you can do with tries as well that we won't explore here. You can have autocompletes for mid-word completions (if I type "francisco" it won't autocomplete "san francisco" at the moment.) You can add weights to certain edges/children so they're suggested first (so San Francisco comes before San Mateo.) But this exercise, assume all words weighted equally.
+
+You'll also represent a space in the tree as its own node so when you type san<space> it autocompletes San Francisco instead of Santa Fe. In other words, no characters are given special treatment. That can be unintuitve.
+ ```
+ class Node {
+  children = [];
+  value = "";
+  terminus = false;
+  constructor(string) {
+    this.value = string[0] || "";
+    if (string.length > 1) {
+      this.children.push(new Node(string.substr(1)));
+    } else {
+      this.terminus = true;
+    }
+  }
+  add(string) {
+    const value = string[0];
+    const next = string.substr(1);
+    for (let i = 0; i < this.children.length; i++) {
+      const child = this.children[i];
+      if (child.value === value) {
+        if (next) {
+          child.add(next);
+        } else {
+          child.terminus = true;
+        }
+        return;
+      }
+    }
+
+    this.children.push(new Node(string));
+  }
+  _complete(search, built, suggestions) {
+    if (suggestions.length >= 3 || (search && search[0] !== this.value)) {
+      return suggestions;
+    }
+
+    if (this.terminus) {
+      suggestions.push(`${built}${this.value}`);
+    }
+
+    this.children.forEach(child =>
+      child._complete(search.substr(1), `${built}${this.value}`, suggestions)
+    );
+
+    return suggestions;
+  }
+
+  complete(string) {
+    return this.children
+      .map(child => child._complete(string, "", []))
+      .reduce((acc, item) => acc.concat(item));
+  }
+}
+
+const createTrie = words => {
+  const root = new Node("");
+  words.forEach(word => root.add(word.toLowerCase()));
+  return root;
+};
+```
