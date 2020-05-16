@@ -874,3 +874,42 @@ const myFilter = (list, fn) => {
   return answer;
 };
 ```
+
+
+## Bloom Filters
+Bloom filters are an interesting data structure which are designed to tell you quickly and efficiently if an item is in a set. In exchange for being really fast and memory efficient, bloom filters trade off the fact that it can't tell you definitely if an item is in the set; it can only tell you definitely that item is not in the set. Stated differently, bloom filters have a false positive rate but do not have false negatives.
+
+Sometimes you don't care about false positives, you just want to make sure something is not in the set. What about that false positive rate? Well, they'll just filter out something they could have shown you and then show you something they definitely can show you. It's an acceptable trade off.
+
+Imagine you have an array with ten elements in it. Every element in the array is a 0 bit. This is an empty bloom filter. Now we want to add "George" to the array.
+
+Okay, so I run my string through three different hashing functions and they give me 2, 5, and 8. I'll flip all those bits at those indexes so my new array is [0, 0, 1, 0, 0, 1, 0, 0, 1, 0].
+
+After doing this, I'll check to see if "Sarah" is in the array. After running through the hashing function, they give 2, 2, and 4. 2 is flipped but 4 is not, so I can definitively say that "Sarah" is not in the data set.
+
+So let's add one more item to the array, "Simona". The indexes we get back 0, 4, and 5. So now our array is [1, 0, 1, 0, 1, 1, 0, 0, 1, 0]. We flip both 0 and 4 indexes and 5 was already flipped so we do nothing to it. Now what happens if we check "Sarah" again? This time we'll get a false positive that "Sarah" is in the dataset. That's why the two answers you can get back from the question "Is X in the bloom filter" are no and maybe.
+
+So when you add more items to a bloom filter, you'll increase your false positive rate. You can mitigate this by having a larger array, but you'll be trading off on having a larger memory footprint. You can also have more or less hashing functions, trading off on how quickly memory will fill up versus false positive rates.
+```
+// Hashing functions. it's not essential to know how they work
+// a library called xxhashjs is being loaded (as XXH) and we're using three different
+// instances of that as your hashing functions
+const h1 = string => Math.abs(XXH.h32(0xABCD).update(string).digest().toNumber() % 100);
+const h2 = string => Math.abs(XXH.h32(0x1234).update(string).digest().toNumber() % 100);
+const h3 = string => Math.abs(XXH.h32(0x6789).update(string).digest().toNumber() % 100);
+
+// fill out these two methods
+// `add` adds a string to the bloom filter and returns void (nothing, undefined)
+// `check` takes a string and tells you if a string is maybe in the bloom filter
+class BloomFilter {
+  _array = new Array(100).fill(0);
+  add(string) {
+    this._array[h1(string)] = 1;
+    this._array[h2(string)] = 1;
+    this._array[h3(string)] = 1;
+  }
+  contains(string) {
+    return !!(this._array[h1(string)] && this._array[h2(string)] && this._array[h3(string)]);
+  }
+};
+```
