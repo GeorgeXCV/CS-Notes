@@ -999,3 +999,50 @@ const breadthFirstTraverse2 = (queue, array) => {
 }
 ```
 Breadth-first traversals are useful for many things, the gist of when you use them is that you know the answer for what you're looking for is "closer" to the root node as opposed to far away when you would use depth-first. Again, it's all trade-offs.
+
+## Graphs
+Graphs are all about modeling relations between many items. For example, think of Facebook's Social Graph. I'm friends with you and you're friends with me. But you're also friends with six hundred other people which is about five hundred fifty too many. Those people in turn also have too friends. But many of my friends are your friends, so the connections aren't linear, they're … well, they're graph-like.
+
+In the Facebook example, each person would be a node. A node represents some entity, much like a row in an SQL database. Every so-called "friendship" would be called an edge. An edge represents some connection between two items. In this case, our Facebook friendship is bidirectional: if I'm friends with you then you're friends with me. Twitter would be an example of a unidirectional edge: just because I follow you doesn't mean you follow me.
+
+Graphs are everywhere. Your various social networks, your Internet of Things devices that have relationships with each other, your neural-networks machine-learning libraries, everywhere. As we continue to model more-and-more of the natural world in virtual space graphs become ever-more important since relationships between things and beings exist all around us.
+
+```
+// you work for a professional social network. in this social network, a professional
+// can follow other people to see their updates (think Twitter for professionals.)
+// write a function that finds the job `title` that shows up most frequently given
+// a set of degree of separation from you. count the initial id's own job title in the total
+
+/*
+  parameters:
+  myId                - number    - the id of the user who is the root node
+  getUser             - function - a function that returns a user's object given an ID
+  degreesOfSeparation - number   - how many degrees of separation away to look on the graph
+*/
+
+const findMostCommonTitle = (myId, getUser, degreesOfSeparation) => {
+  let queue = [myId];
+  const seen = new Set();
+  const jobs = {};
+  
+  for (let i = 0; i <= degreesOfSeparation; i++) {
+    queue = queue
+      .filter((id) => !seen.has(id))
+      .map(getUser)
+      .map(user => {
+        jobs[user.title] = jobs[user.title] ? jobs[user.title] + 1 : 1;
+        seen.add(user.id)
+        return user;
+      })
+      .map((user) => user.connections)
+      .reduce((acc, users) => acc.concat(users), [])
+  }
+  return Object.keys(jobs)
+    .map((job) => [job, jobs[job]])
+    .sort((a, b) => {
+      if (a[1] > b[1]) return -1;
+      if (a[1] < b[1]) return 1;
+      return 0;
+    })[0][0]
+}
+```
