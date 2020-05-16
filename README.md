@@ -760,7 +760,7 @@ A good hashing algorithm needs to have a pretty good distribution of values. If 
 A good hashing algorithm needs to be performant too; the point of a hash table to have lightning fast lookups and writes; if your hashing algorithm is mega slow then you're defeating the purpose; ie don't use cryptographically secure algorithms!
 
 The modulo operator (%) is important to understand in hashing too. Generally the numbers your hashing algorithms will generate huge numbers, numbers far larger than the size of your array. To ensure that your number falls in a legal limit of 0 to the largest index in the array, we're going to use the modulo operator. Remember doing long division in school? Where 10 / 3 = 3 remainder 1? The modulo operator give you just the remainder. So 10 % 3 = 1. It just totally throws away the result of the integer division. This is useful because now we can get huge numbers but still ensure they fall in an acceptable range. 
- ```
+```
 class HashTableSet {
   constructor() {
     this.table = new Array(255);
@@ -780,3 +780,97 @@ class HashTableSet {
   }
 }
  ```
+## Functional Programming
+Learning to functional program, whether you choose to adhere to its tenants going forward or not, will make you a much better programmer. It teaches you ways to structure your code to make it maintainable, compose able, and easy to reason about. 
+
+Key concepts, first, would be avoiding side effects. We want to minimize where we affect state. This makes our program easier to reason about because we can easily reason through individual parts of our code. If your code has a lot of state that gets modified everywhere then you have reason through your code over time instead of being able to take tiny snapshots of individual functions. A function that modifies no state and is idempotent is called a pure function. We generally want small, focused, pure functions. 
+
+Second, higher order function. Because JavaScript has functions as first-class citizens, this makes pattern possible. We can pass functions into other functions, and this pattern of composition makes for some powerful paradigms. Pure functions are important parts of higher order functions because we're going to run this functions over and over again. 
+
+Third, transforming lists of data. When you're operation exclusively on lists, it's called vector or array programming. When you're doing that, you can depend on the fact that you can take the output of one function and safely put that into the next function. We can chain calls together. Our code becomes expressive at this point. We begin describe what we want to happen rather than imperatively telling how. 
+
+### Map
+Map is a higher order function. That is to say it takes in another function and has its own logic on how to apply that function.
+
+Map has similarities to forEach. It takes a function in and applies that function individually to each element in that array. Where it differs from forEach is that map creates a new array of the values returned within the function. It allows you to transform whole lists of values without modifying the original list. 
+```
+const double = num => 2*num;
+const doubleEach = input => input.map( double );
+
+const square = num => num*num;
+const squareEach = input => input.map( square );
+
+const doubleAndSquareEach = input => input.map(double).map(square);
+
+const myMap = (array, fn) => {
+  const answer = [];
+  for (let i = 0; i < array.length; i++) {
+    answer.push(fn(array[i]));
+  }
+  return answer;
+};
+```
+
+### Reduce
+Reduce is really useful when you a have a list of values that you want to combine in some meaningful way down to one value. You'll often hear the term map/reduce thrown around in regards to data science; they're used a lot in that sense because you're taking large sets of data, doing some transformations on them to get them in a certain state, and then reducing them down to useful statistics.
+
+A reduce function involves a list it's being called, a function that does the reducing, the accumulator, and the seed value. The accumulator is the interim value that is passed into each call of the reducer function that the function then returns. The value returned is then passed into the next call of the reducer function on the next value. The seed value is the value of the first accumulator. If there's no seed value, the zero index in the array is the seed. 
+```
+var list = ['a','b','c'];
+list.reduce(function(accumulator, letter) {
+    return accumulator + letter.toUpperCase();
+}); // returns aBC since a becomes the seed
+
+list.reduce(function(accumulator, letter) {
+    return accumulator + letter.toUpperCase();
+}, ''); // returns ABC since '' starts as the seed
+```
+
+```
+const addTogether = list => {
+  return list.reduce((acc, num) => acc+num, 0);
+};
+
+const concatenateStringsWithSpaces = list => {
+  return list.reduce((acc, string) => acc + string + " ", "");
+};
+
+const squaresAndSubtracts = list => {
+  return list
+    .map( num => num*num )
+    .reduce( (accumulator, num) => accumulator-num );
+};
+
+const myReduce = (list, fn, seed) => {
+  let answer = seed;
+  for (let i = 0; i < list.length; i++) {
+    answer = fn(answer, list[i]);
+  }
+  return answer;
+};
+```
+
+### Filter
+Filter does exactly what it sounds like: it takes a list of items and pares out some of the items you don't need in the list. All you have to do is write a filter function that returns true if you want the item to stay in the list or false if you want it removed from the list. The returned result is a new list with just the items you returned true on. 
+```
+const filterOutOdds = nums => nums.filter( num => num % 2 === 0);
+
+const filterState = (list, state) => list.filter( person => person.state === state );
+
+const showOutOfCADevs = list => {
+  return list
+    .filter( person => person.state !== 'CA')
+    .map( person => person.name.toUpperCase() )
+    .reduce( (acc, name) => `${acc}, ${name}` );
+};
+
+const myFilter = (list, fn) => {
+  const answer = [];
+  for (let i = 0; i < list.length; i++) {
+    if (fn(list[i])) {
+      answer.push(list[i]);
+    }
+  }
+  return answer;
+};
+```
