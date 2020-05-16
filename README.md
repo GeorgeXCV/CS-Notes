@@ -1361,3 +1361,14 @@ function radixSort(array) {
   return array;
 }
 ```
+
+## Programming
+### Elements of Programming
+Computer language is not just a way of computer to perform operations but rather that it is a novel formal medium for expressing ideasabout methodology. Programs must be written for people to read, and only incidentally for machines to execute. 
+
+Every powerful language has three mechanisms:
+* primitive expressions and statements, which represent the simplest building blocks that the language provides,
+* means of combination, by which compound elements are built from simpler ones, and
+* means of abstraction, by which compound elements can be named and manipulated as units.
+
+In programming, we deal with two kinds of elements: functions and data. Informally, data is stuff that we want to manipulate, and functions describe the rules for manipulating the data. Thus, any powerful programming language should be able to describe primitive data and primitive functions, as well as have some methods for combining and abstracting both functions and data.
