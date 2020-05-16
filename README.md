@@ -247,3 +247,536 @@ Queues adhere to the "First-In First-Out" mantra. All stacks need to have the me
 Queues are useful for lots of programming problems. How about print jobs? Usually you want things to print in the order sent to the printer; otherwise Janice from Accounting is going to be printing all of her documents before you can print anything.
 
 There are also priority queues as well. In a priority queue you also assign a priority to the elements that are enqueued. Items that have higher priorities get dequeued first. This is useful for networking; some packets are more important than others. If you're streaming video, that gets a high priority because getting a packet later means likely skipping some frames, whereas syncing to Dropbox can wait for a lull in network traffic to continue syncing. 
+
+## Data Structures - Implementations
+### Array List
+ArrayList is done by directly interacting with an allocated piece of memory. You then interact with that allocated piece of memory by addressing the specific indices in the array. In other words, you just treat it like a normal array. However things get a bit more complicated when deleting items from an ArrayList: you have to collapse the list down to the spot where you deleted. 
+```
+[a,b,c,d,e,f,g]
+-> delete index 3
+-> array is [a,b,c,(blank),e,f,g]
+-> shift elements 4,5,6 back one index
+-> array is [a,b,c,e,f,g]
+-> decrement length
+```
+
+```
+class ArrayList {
+  constructor() {
+    this.length = 0;
+    this.data = {};
+  }
+  push(value) {
+    this.data[this.length] = value;
+    this.length++;
+  }
+  pop() {
+    const ans = this.data[this.length-1];
+    delete this.data[this.length-1];
+    this.length--;
+    return ans;
+  }
+  get(index) {
+    return this.data[index];
+  }
+  delete(index) {
+    const ans = this.data[index];
+    this._collapseTo(index);
+    return ans;
+  }
+  _collapseTo(index) {
+    for (let i = index; i < this.length; i++) {
+      this.data[i] = this.data[i+1];
+    }
+    delete this.data[this.length-1];
+    this.length--;
+  }
+  serialize() {
+    return this.data;
+  }
+}
+```
+
+### Linked List
+Linked List is made of a bunch of nodes that point to the next one in the list. Every node in a Linked Lists has two properties, the value of whatever is being store and a pointer to the next node in the list. 
+
+LinkedLists have their ups and downs. On one hand, adding and removing is a breeze: you just have the change the next pointer on the previous node and that's it. Getting is a pain though: if .get is called you have to loop through the nodes until you get to the right node. And that's the tradeoff between LinkedList and ArrayList: LinkedList's adds and deletes are O(1) but the gets are O(n); ArrayList's adds and deletes are O(n) but the gets are O(1). If you're doing a bunch of adds and deletes but not many gets, stick to LinkedLists. Doing a bunch of gets? ArrayLists. Both? You decide! 
+
+Example of delete:
+```
+value: [a]   [b]   [c]   [d]
+next:  [ ]-> [ ]-> [ ]-> [ ]-> null
+```
+
+```
+-> delete is called on index 2 (value 'c')
+-> grab the head (value 'a')
+-> loop through the nexts until you get the index
+   before the one to be deleted (value 'b')
+-> change the the next of index 1 to be the next of index 2
+-> decrement length
+-> return the value of the deleted node
+```
+
+```
+class LinkedList {
+  constructor() {
+    this.tail = this.head = null;
+    this.length = 0;
+  }
+  push(value) {
+    const node = new Node(value);
+    this.length++;
+    if (!this.head) {
+     this.head = node;
+    }
+    else {
+      this.tail.next = node;
+    }
+    this.tail = node;
+  }
+  pop() {
+    if (!this.head) return null;
+    if (this.head === this.tail) {
+      const node = this.head;
+      this.head = this.tail = null;
+      return node.value;
+    }
+    const penultimate = this._find(null, (value, nodeValue, i, current) => current.next === this.tail );
+    const ans = penultimate.next.value;
+    penultimate.next = null;
+    this.tail = penultimate;
+    this.length--;
+    return ans;
+  }
+  _find(value, test=this.test) {
+    let current = this.head;
+    let i = 0;
+    while(current) {
+      if (test(value, current.value, i, current)) {
+        return current;
+      }
+      current = current.next;
+      i++;
+    }
+    return null;
+  }
+  get(index) {
+    const node = this._find(index, this.testIndex);
+    if (!node) return null;
+    return node.value;
+  }
+  delete(index) {
+    if (index === 0) {
+      const head = this.head;
+      if (head) {
+        this.head = head.next;
+      }
+      else {
+        this.head = null;
+      }
+      this.length--;
+      return head.value;
+    }
+    
+    const node = this._find(index-1, this.testIndex);
+    const excise = node.next;
+    if (!excise) return null;    
+    node.next = excise.next;    
+    if (!node.next.next) this.tail = node.next;
+    this.length--;
+    return excise.value;
+  }
+  test(search, nodeValue) {
+    return search === nodeValue;
+  }
+  testIndex(search, __, i) {
+    return search === i;
+  }
+  serialize() {
+    const ans = [];
+    let current = this.head;
+    if (!current) return ans;
+    while (current) {
+      ans.push(current.value);
+      current = current.next;
+    }
+    return ans;
+  }
+}
+
+
+
+class Node {
+  constructor(value) {
+    this.value = value;
+    this.next = null;
+  }
+}
+```
+
+### Binary Search Tree
+Trees cans be a useful structure for a middle ground between LinkedLists and ArrayLists. The gist of the BST is that a node in a BST has zero, one, or two subtrees. Every element in the left subtree is lesser than the value of the node and every node in the right is greater. By being able to depend on this fact, it makes it very simple to add and find new elements. Like LinkedLists, we just have to change pointers when we add new elements. 
+
+Example:
+```
+Current Tree:
+      10
+    /   \
+  5      15
+ / \     /
+3   8   12
+
+-> .add is called with 7
+-> start at root (10)
+-> lesser than 10, go left to 5
+-> greater than 5, go right to 8
+-> lesser than 8, go left
+-> no element at left, create new node
+   and make it the left subtree of 8
+
+         10
+       /   \
+     5      15
+    / \     /
+   3   8   12
+      /
+     7
+```
+
+BSTs get an average case of O(log n) on gets, adds, and deletes, but they can have a worst case of O(n) if you do something like add a sorted list to a BST. BSTs do perform well so long as you stay away from their edge cases. 
+```
+class Tree {
+  constructor() {
+    this.root = null;
+  }
+  add(value) {
+    if (this.root === null) {
+      this.root = new Node(value);
+    }
+    else {
+      let current = this.root;
+      while(true) {
+        if (current.value > value) {
+          // go left
+          
+          if (current.left) {
+            current = current.left;
+          }
+          else {
+            current.left = new Node(value);
+            break;
+          }
+        }
+        else {
+          // go right
+          if (current.right) {
+            current = current.right;
+          }
+          else {
+            current.right = new Node(value);
+            break;
+          }    
+        }
+      }
+    }
+    return this;
+  }
+  toJSON() {
+    return JSON.stringify(this.root.serialize(), null, 4);
+  }
+  toObject() {
+    return this.root.serialize();
+  }
+}
+
+class Node {
+  constructor(value=null, left=null, right=null) {
+    this.left = left;
+    this.right = right;
+    this.value = value;
+  }
+  serialize() {
+    const ans = { value: this.value };
+    ans.left = this.left === null ? null : this.left.serialize();
+    ans.right = this.right === null ? null : this.right.serialize();
+    return ans;
+  }
+}
+```
+
+### AVL Tree
+AVL tree are the answer to the problem that BST have: BST can easily get out of balance. Even if it's not the worst case scenario of ascending or descending lists being added, even a random distribution on numbers on a BST is going to pretty heavy in places. There are several ways to balance these trees.
+
+AVLs are specialized BSTs. That is to say a valid AVL tree is always a valid BST (but not necessarily vice versa.) When you add a new value to a AVL tree, you do it the same way. The only difference is on the way up your recursive calls you check to see if the node is balanced after you added the new node. A tree is out of balance if its subtrees' difference of heights is greater than one. 
+
+We can now guarantee that we won't hit those bad or worst case scenarios of having greatly out-of-balance trees and guarantee we won't hit the O(n) cases. Our worst case becomes O(log n). 
+
+The basic idea is that if one side of tree gets too heavy (ie the max height of one of its children is two more than the max height of the other child) then we need to perform a rotation to get the tree back in balance. Let's take a look at the most basic rotation. 
+```
+5
+ \
+  8
+
+-> Currently valid AVL tree
+-> .add called with 9
+
+5 - node A
+ \
+  8 - node B
+   \
+    9 - node C
+
+(on the way up from the recursion)
+-> check balance of node C: left height is 0, right height is 0, balanced
+-> check balance of node B: left height is 0, right height is 1, balanced
+-> check balance of node A: left height is 0, right height is 2
+   unbalanced, right heavy, child is right heavy
+
+-> perform right rotation
+-> swap the values of nodes A and B
+-> make node B the left child of node A
+-> make node C the right child of node A
+-> move node B's right child to its left child
+   (in this case they're both null)
+-> make node A's _original_ left child
+   (which was null in this case) the left child of node B
+-> update the heights of all the nodes involved
+
+      8 - node A
+   /     \
+  5        9
+node B   node C
+```
+
+This was a right rotation, but a left rotation is mirror of this. This generalized formula works for all but one case which we'll examine now. Even in this special case, all you have to do is perform an extra rotation which you already have the logic for. 
+
+```
+5
+ \
+  8
+
+-> currently valid AVL tree
+-> .add called with 7
+
+5 - node A
+ \
+  8 - node B
+ /
+7 - node C
+
+
+(on the way up from the recursion)
+-> check balance of node C: left height is 0, right height is 0, balanced
+-> check balance of node B: left height is 0, right height is 1, balanced
+-> check balance of node A: left height is 0, right height is 2,
+   unbalanced, right heavy, child is left heavy
+```
+
+You perform a double rotation when the opposite child is heavy during a rotation. Look at our example (the 5\8/7 example.) We're doing a right rotation but the left child of the right child is heavy (it's not out of balance, it's just heavier than the right child.) So what we're going to do is before we do a left rotation on the right child before we do a right rotation on the root node of the rotation. 
+
+```
+5 - node A
+ \
+  8 - node B
+ /
+7 - node C
+
+[ ... previous steps ]
+-> check balance of node A: left height is 0, right height is 2
+   unbalanced - right heavy, child is left heavy
+-> perform left rotation on left heavy right child node B
+
+5 - node A
+ \
+  7 - node B
+   \
+    8 - node C
+
+-> now perform right rotation on node A
+
+      7 - node A
+   /     \
+  5        8
+  node B   node C
+ ```
+  
+Nailing down the logic of those rotations is a pain but once you do AVL trees are just a series of either left or right rotations on a BST. Even deletes follow this pattern; it's just in deletes sometimes you have to do even more rotations. 
+ ```
+class Tree {
+  constructor() {
+    this.root = null;
+  }
+  add(value) {
+    if (!this.root) {
+      this.root = new Node(value);
+    }
+    else {
+      this.root.add(value);
+    }
+  }
+  toJSON() {
+    return JSON.stringify(this.root.serialize(), null, 4);
+  }
+  toObject() {
+    return this.root.serialize();
+  }
+}
+
+class Node {
+  constructor(value=null, left=null, right=null) {
+    this.left = left;
+    this.right = right;
+    this.value = value;
+    this.height = 1;
+  }
+  add(value) {
+    
+    if (value < this.value) {
+      // go left
+      
+      if (this.left) {
+        this.left.add(value);
+      }
+      else {
+        this.left = new Node(value);
+      }
+      if (!this.right || this.right.height < this.left.height) {
+        this.height = this.left.height + 1;
+      }      
+    }
+    else {
+      // go right
+      
+      if (this.right) {
+        this.right.add(value);
+      }
+      else {
+        this.right = new Node(value);
+      }
+      if (!this.left || this.right.height > this.left.height) {
+        this.height = this.right.height + 1;
+      } 
+    }
+    this.balance();
+  }
+  balance() {
+    const rightHeight = (this.right) ? this.right.height : 0;
+    const leftHeight = (this.left) ? this.left.height : 0;
+    
+    console.log( this.value, leftHeight, rightHeight );
+    
+    if ( leftHeight > rightHeight + 1 ) {
+      const leftRightHeight = (this.left.right) ? this.left.right.height : 0;
+      const leftLeftHeight = (this.left.left) ? this.left.left.height : 0;
+      
+      if (leftRightHeight > leftLeftHeight) {
+        this.left.rotateRR();
+      }
+      
+      this.rotateLL();
+    }
+    else if ( rightHeight > leftHeight + 1 ) {
+      const rightRightHeight = (this.right.right) ? this.right.right.height : 0;
+      const rightLeftHeight = (this.right.left) ? this.right.left.height : 0;
+      
+      if (rightLeftHeight > rightRightHeight) {
+        this.right.rotateLL();
+      }
+      
+      this.rotateRR();
+    }
+  }
+  rotateRR() {
+    const valueBefore = this.value;
+    const leftBefore = this.left;
+    this.value = this.right.value;
+    this.left = this.right;
+    this.right = this.right.right;
+    this.left.right = this.left.left;
+    this.left.left = leftBefore;
+    this.left.value = valueBefore;
+    this.left.updateInNewLocation();
+    this.updateInNewLocation();
+  }
+  rotateLL() {
+    const valueBefore = this.value;
+    const rightBefore = this.right;
+    this.value = this.left.value;
+    this.right = this.left;
+    this.left = this.left.left;
+    this.right.left = this.right.right;
+    this.right.right = rightBefore;
+    this.right.value = valueBefore;
+    this.right.updateInNewLocation();
+    this.updateInNewLocation();
+  }
+  updateInNewLocation() {
+    if (!this.right && !this.left) {
+      this.height = 1;
+    }
+    else if (!this.right || (this.left && this.right.height < this.left.height)) {
+        this.height = this.left.height + 1;
+    }
+    else { //if (!this.left || this.right.height > this.left.height)
+        this.height = this.right.height + 1;
+    }
+  }
+  serialize() {
+    const ans = { value: this.value };
+    ans.left = this.left === null ? null : this.left.serialize();
+    ans.right = this.right === null ? null : this.right.serialize();
+    ans.height = this.height;
+    return ans;
+  }
+}
+ ```
+ 
+### Hash Table
+Hash tables are extremely powerful tools in modern CS and are used extensively in things like programming languages' underpinnings, databases, caches, etc. They do have some tradeoffs, namely potentially memory footprints and the need for complicated hashing but they have constant time (O(1)) lookups, deletes, and adds if you're doing a set or map. 
+
+The gist of a hash table is you send your key through a hashing function (like MD5, SHA1, or one of your invention) which converts the to an addressable space (some sort of index.) Since in JavaScript we don't actually manage memory on that low of level, we're going to approximate the way it would work with a large empty array. However keep in mind that if this was a language where we managed our own memory we'd be doing that instead. 
+
+This is powerful for maps because now our key points to exactly where our object is being store. And it's very powerful for sets because we can just check where if anything exists that memory address and if so then it exists; if not then that key is not in the set. When we delete or add there's no lookup cost either so we have constant time deletes, adds, and lookups. Not a perfect structure though.
+
+First of all, this isn't useful for something an order with (a list of some sort) because your addresses won't have any notion of order.
+
+Secondly, you need a sufficiently large footprint of memory to be able to store all of your objects without collisions. This can balloon quickly. 
+
+Thirdly, you'll need a good hashing algorithm that spits out a viable address for table. That algorithms needs to have several qualities to it. It needs to be idempotent. Idempotent is a fancy way of saying that a function given an input always outputs the same output. function double(x) { return 2x; } would be an idempotent function because if I do double(5) a million times, on the million-and-first try I'll still get the answer 10. The function double is idempotent. Take the following function: 
+
+ ```
+var multiplier = 0;
+function doublePlus(x) {
+    multiplier++;
+    return 2 * x * multiplier;
+}
+ ```
+ 
+The above function is not idempotent because if I call I keep calling the doublePlus function with 5, I'm going to keep getting different answers. It is not idempotent because the function has side effects. Side effects are when calling a function makes some effect to the state surrounding it. You generally want to avoid side effects in programming as much as possible because it makes debugging much hard, makes your code less testable because it means you code must be in a certain state to work a certain way, and makes the code harder to read because you have to think about functions over term instead of in a vacuum because they depend on the code around them. Idempotence is critical in a good hashing function because given a certain input it always has to address the same place in memory or else the whole idea of a hash table falls apart. 
+
+A good hashing algorithm needs to have a pretty good distribution of values. If it doesn't have a good distribution of values you are going to end up with collisions. Collisions happen when two inputs end up with the same the output, which means they are going to end up in the same spot in memory. That's a problem. An example of a poor hashing algorithm would be substituting 1 for a, 2 for b, 3 for c, etc. for a string. 'az' (1 + 26) and 'by' (2 + 25) are going to collide, as would 'za'. You need them to have a wide and as-even-as-possible distribution.
+
+A good hashing algorithm needs to be performant too; the point of a hash table to have lightning fast lookups and writes; if your hashing algorithm is mega slow then you're defeating the purpose; ie don't use cryptographically secure algorithms!
+
+The modulo operator (%) is important to understand in hashing too. Generally the numbers your hashing algorithms will generate huge numbers, numbers far larger than the size of your array. To ensure that your number falls in a legal limit of 0 to the largest index in the array, we're going to use the modulo operator. Remember doing long division in school? Where 10 / 3 = 3 remainder 1? The modulo operator give you just the remainder. So 10 % 3 = 1. It just totally throws away the result of the integer division. This is useful because now we can get huge numbers but still ensure they fall in an acceptable range. 
+ ```
+class HashTableSet {
+  constructor() {
+    this.table = new Array(255);
+  }
+  add(input) {
+    this.table[this.hash(input, 255)] = input;
+  }
+  check(input) {
+    return !!this.table[this.hash(input, 255)];
+  }
+  hash(input, max) {
+    let num = 0;
+    for (let i = 0; i < input.length; i++) {
+      num += input.charCodeAt(i) * i;
+    }
+    return num % max;    
+  }
+}
+ ```
