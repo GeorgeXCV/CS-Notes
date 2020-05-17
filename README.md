@@ -1377,3 +1377,7 @@ In programming, we deal with two kinds of elements: functions and data. Informal
 Programs  are  translated  by  other  programs  into  different  forms,  beginning  as ASCII text and then translated by compilers and linkers into binary executablefiles. Processors read and interpret binary instructions that are stored in main mem-ory.
 
 The operating system kernel serves as an intermediary between the applica-tion and the hardware. It provides three fundamental abstractions: (1) Files areabstractions for I/O devices. (2) Virtual memory is an abstraction for both mainmemory and disks. (3) Processes are abstractions for the processor, main memory,and I/O devices.
+
+Rather than accessing individual bits in memory, most computers use blocks of 8 bits, or bytes, as the smallest addressable unit of memory. A machine-level program views memory as a very large array of bytes, referred to as virtual memory. Every byte of memory is identified by a unique number, known as its address, and the set of all possible addresses is known as the virtual address space.
+
+Computers encode information as bits, generally organized as sequences of bytes. Different encodings are used for representing integers, real numbers, and character strings. Different models of computers use different conventions for encoding numbers and for ordering the bytes within multi-byte data. The advantage of 64-bit pro-grams is that they can go beyond the 4 GB address limitation of 32-bit programs.
