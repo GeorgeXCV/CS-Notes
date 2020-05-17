@@ -1372,3 +1372,8 @@ Every powerful language has three mechanisms:
 * means of abstraction, by which compound elements can be named and manipulated as units.
 
 In programming, we deal with two kinds of elements: functions and data. Informally, data is stuff that we want to manipulate, and functions describe the rules for manipulating the data. Thus, any powerful programming language should be able to describe primitive data and primitive functions, as well as have some methods for combining and abstracting both functions and data.
+
+## Computer Systems - A Programmer’s Perspective 
+Programs  are  translated  by  other  programs  into  different  forms,  beginning  as ASCII text and then translated by compilers and linkers into binary executablefiles. Processors read and interpret binary instructions that are stored in main mem-ory.
+
+The operating system kernel serves as an intermediary between the applica-tion and the hardware. It provides three fundamental abstractions: (1) Files areabstractions for I/O devices. (2) Virtual memory is an abstraction for both mainmemory and disks. (3) Processes are abstractions for the processor, main memory,and I/O devices.
