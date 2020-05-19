@@ -1389,3 +1389,36 @@ When programming in a high-level language such as C, and even more so in Java, w
 Linking is the process of collecting and combining various pieces of code and data into a single file that can be loaded (copied) into memory and executed. Linking can be performed atcompile time,  when the source code is translatedinto machine code; at load time, when the program is loaded into memory and executed by the loader; and even at run time, by application programs. 
 
 On modern systems, linking is performed automatically by programs called linkers. Linkers play a crucial role in software development  because they enable separate compilation. Instead of organizing a large application as one monolithic source file, we can decompose it into smaller, more manageable modules that can be modified and compiled separately. When we change one of these modules, we simply recompile it and relink the application, without having to recompile the other files.
+
+## Designing Data-Intensive Applications
+### Data Models and Query Languages
+Data  models are perhaps the  most important  part of developing software, because they have such a profound effect: not only on how the software is written, but also on how we think about the problem that we are solving.
+
+The best-known data model today is probably that of SQL, based on the relational model proposed by Edgar Codd in 1971: data is  organized into relations (called tables in SQL), where each relation is an unordered collection of tuples (rows in SQL).
+
+Much of what you see on the web today is still powered by relational databases, be it online publishing, discussion, social  networking, ecommerce, games, software-as-a-service productivity applications, or much more.
+
+If the data in your application has a document-like structure (i.e.,  a  tree  of  one-to-many relationships, where typically the entire tree is loaded at once), then it’s probably a good idea to use a document model. The relational technique of shredding—splitting  a document-like structure into multiple tables (like positions, education, and contact_info) can lead to cumbersome schemas and unnecessarily complicated application code.
+
+When the relational model was introduced, it included a new way of querying data: SQL is a declarative query language, whereas IMS and  CODASYL queried the data‐base using imperative code. 
+
+An imperative language tells the computer to perform certain operations in a certain order. You can imagine stepping through the code line by line, evaluating conditions,updating variables, and deciding whether to go around the loop one more time.
+
+```
+function getSharks() {
+var sharks = [];
+ for (var i = 0; i < animals.length; i++) {
+   if (animals[i].family === "Sharks") {  
+    sharks.push(animals[i]);
+     }    
+    }
+   return sharks;
+ }
+```
+
+In a declarative query language, like SQL or relational algebra, you just specify the pattern of the data you want what conditions the  results must meet, and how you want the data to be transformed (e.g., sorted, grouped, and aggregated) but not how to achieve that goal. It is up to the database system’s query optimizer to decide which indexes and which join methods to use, and in which order to execute various partsof the query.
+```
+SELECT * FROM animalsWHERE family = 'Sharks';
+```
+
+A declarative query language is attractive because it is typically more concise and eas‐ier to work with than an imperative API. But more importantly, it also hides implementation details of the database engine, which makes it possible for the database system to introduce performance improvements without requiring any changes to queries.
