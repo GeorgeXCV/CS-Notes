@@ -3,6 +3,30 @@
 Big O is the way we analyze how efficient algorithms. We can model how much time any function is going to take given n inputs, but in reality we're interested in the order of magnitude of the number and necessarily of the exact figure.
 Only care about huge difference, if function is 300ms vs 330 ms, whatever. But 500ms vs 30 seconds is huge. We ignore the little parts and concentrate on the big parts.
 
+```
+def print_first_item(items):
+    print items[0]
+```
+This function runs in O(1) time (or "constant time") relative to its input. The input list could be 1 item or 1,000 items, but this function would still just require one "step." 
+
+
+```
+def print_all_items(items):
+    for item in items:
+        print item
+```
+This function runs in O(n) time (or "linear time"), where n is the number of items in the list. If the list has 10 items, we have to print 10 times. If it has 1,000 items, we have to print 1,000 times. 
+
+
+```
+def print_all_possible_ordered_pairs(items):
+    for first_item in items:
+        for second_item in items:
+            print first_item, second_item
+```
+            
+Here we're nesting two loops. If our list has nnn items, our outer loop runs nnn times and our inner loop runs nnn times for each iteration of the outer loop, giving us n2n^2n2 total prints. Thus this function runs in O(n²) time (or "quadratic time"). If the list has 10 items, we have to print 100 times. If it has 1,000 items, we have to print 1,000,000 times. 
+
 With 3x² + x + 1, the Big O for this equation would be O(n²) where O is just absorbing all the other fluff (including the factor on the biggest term.) Just grab the biggest term. So for n terms, it's going take us n*n time to go through our inputs. 
 
  This is O(n) because we go through all the inputs once in a loop. 
@@ -32,6 +56,83 @@ function makeTuples(input) {
     return answer;
 }
 ```
+
+When you're calculating the big O complexity of something, you just throw out the constants. For big O notation we're looking at what happens as nnn gets arbitrarily large. As n gets really big, adding 100 or dividing by 2 has a decreasingly significant effect. 
+
+Drop the less significant terms 
+
+```
+def print_all_numbers_then_all_pair_sums(numbers):
+    print "these are the numbers:"
+    for number in numbers:
+        print number
+
+    print "and these are their sums:"
+    for first_number in numbers:
+        for second_number in numbers:
+            print first_number + second_number
+```
+
+Here our runtime is O(n + n^2), which we just call O(n2). Even if it was O(n2/2+100n)O(n^2/2 + 100n), it would still be O(n2). Again, we can get away with this because the less significant terms quickly become, well, less significant as nnn gets big.
+
+Often this "worst case" stipulation is implied. But sometimes you can impress your interviewer by saying it explicitly.
+
+Sometimes the worst case runtime is significantly worse than the best case runtime: 
+
+```
+def contains(haystack, needle):
+
+    # Does the haystack contain the needle?
+    for item in haystack:
+        if item == needle:
+            return True
+
+    return False
+```
+
+Here we might have 100 items in our haystack, but the first item might be the needle, in which case we would return in just 1 iteration of our loop.
+
+In general we'd say this is O(n) runtime and the "worst case" part would be implied. But to be more specific we could say this is worst case O(n) and best case O(1) runtime. For some algorithms we can also make rigorous statements about the "average case" runtime. 
+
+Sometimes we want to optimize for using less memory instead of (or in addition to) using less time. Talking about memory cost (or "space complexity") is very similar to talking about time cost. We simply look at the total size (relative to the size of the input) of any new variables we're allocating. 
+
+This function takes O(1) space (we use a fixed number of variables): 
+```
+def say_hi_n_times(n):
+    for time in xrange(n):
+        print "hi"
+```
+
+This function takes O(n) space (the size of hi_list scales with the size of the input): 
+```
+def list_of_hi_n_times(n):
+    hi_list = []
+    for time in xrange(n):
+        hi_list.append("hi")
+    return hi_list
+```
+
+Usually when we talk about space complexity, we're talking about additional space, so we don't include space taken up by the inputs. For example, this function takes constant space even though the input has n items: 
+
+```
+def get_largest_item(items):
+    largest = float('-inf')
+    for item in items:
+        if item > largest:
+            largest = item
+    return largest
+```
+
+Sometimes there's a tradeoff between saving time and saving space, so you have to decide which one you're optimizing for. 
+
+You should make a habit of thinking about the time and space complexity of algorithms as you design them. Before long this'll become second nature, allowing you to see optimizations and potential performance issues right away. 
+
+Big O ignores constants, but sometimes the constants matter. If we have a script that takes 5 hours to run, an optimization that divides the runtime by 5 might not affect big O, but it still saves you 4 hours of waiting.
+
+Beware of premature optimization. Sometimes optimizing time or space negatively impacts readability or coding time. For a young startup it might be more important to write code that's easy to ship quickly or easy to understand later, even if this means it's less time and space efficient than it could be.
+
+But that doesn't mean startups don't care about big O analysis. A great engineer (startup or otherwise) knows how to strike the right balance between runtime, space, implementation time, maintainability, and readability. 
+
 ## Recursion
 Recursion is when you define something in terms of itself.
 
