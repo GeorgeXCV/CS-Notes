@@ -25,7 +25,7 @@ def print_all_possible_ordered_pairs(items):
             print first_item, second_item
 ```
             
-Here we're nesting two loops. If our list has nnn items, our outer loop runs nnn times and our inner loop runs nnn times for each iteration of the outer loop, giving us n2n^2n2 total prints. Thus this function runs in O(n²) time (or "quadratic time"). If the list has 10 items, we have to print 100 times. If it has 1,000 items, we have to print 1,000,000 times. 
+Here we're nesting two loops. If our list has n items, our outer loop runs n times and our inner loop runs n times for each iteration of the outer loop, giving us n² total prints. Thus this function runs in O(n²) time (or "quadratic time"). If the list has 10 items, we have to print 100 times. If it has 1,000 items, we have to print 1,000,000 times. 
 
 With 3x² + x + 1, the Big O for this equation would be O(n²) where O is just absorbing all the other fluff (including the factor on the biggest term.) Just grab the biggest term. So for n terms, it's going take us n*n time to go through our inputs. 
 
@@ -73,7 +73,7 @@ def print_all_numbers_then_all_pair_sums(numbers):
             print first_number + second_number
 ```
 
-Here our runtime is O(n + n^2), which we just call O(n2). Even if it was O(n2/2+100n)O(n^2/2 + 100n), it would still be O(n2). Again, we can get away with this because the less significant terms quickly become, well, less significant as nnn gets big.
+Here our runtime is O(n + n²), which we just call O(n²). Even if it was O(n²/2+100n), it would still be O(n²). Again, we can get away with this because the less significant terms quickly become, well, less significant as nnn gets big.
 
 Often this "worst case" stipulation is implied. But sometimes you can impress your interviewer by saying it explicitly.
 
