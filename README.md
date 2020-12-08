@@ -1,23 +1,48 @@
 # Computer Science
+
+## CS Theory
+- [Big O](#big-o)
+- [Recursion](#recursion)
+
+## Data Structures - Implementations
+- [Array List](#array-list)
+- [Linked List](#linked-list)
+- [Binary Search Tree](#binary-search-tree)
+- [AVL Tree](#avl-tree)
+- [Hash Table](#hash-table)
+
+## Data Structures - Interfaces
+- [Set](#set)
+- [Map](#map)
+- [Stack](#stack)
+- [Queue](#queue)
+
+## Sorting Algorithms
+- [Bubble Sort](#bubble-sort)
+- [Insertion Sort](#insertion-sort)
+- [Merge Sort](#merge-sort)
+- [Quick Sort](#quick-sort)
+- [Tree Traversals](#tree-traversals)
+
 ## Big O
 Big O is the way we analyze how efficient algorithms. We can model how much time any function is going to take given n inputs, but in reality we're interested in the order of magnitude of the number and necessarily of the exact figure.
 Only care about huge difference, if function is 300ms vs 330 ms, whatever. But 500ms vs 30 seconds is huge. We ignore the little parts and concentrate on the big parts.
 
+This function runs in O(1) time (or "constant time") relative to its input. The input list could be 1 item or 1,000 items, but this function would still just require one "step." 
 ```
 def print_first_item(items):
     print items[0]
 ```
-This function runs in O(1) time (or "constant time") relative to its input. The input list could be 1 item or 1,000 items, but this function would still just require one "step." 
 
-
+This function runs in O(n) time (or "linear time"), where n is the number of items in the list. If the list has 10 items, we have to print 10 times. If it has 1,000 items, we have to print 1,000 times. 
 ```
 def print_all_items(items):
     for item in items:
         print item
 ```
-This function runs in O(n) time (or "linear time"), where n is the number of items in the list. If the list has 10 items, we have to print 10 times. If it has 1,000 items, we have to print 1,000 times. 
 
 
+Here we're nesting two loops. If our list has n items, our outer loop runs n times and our inner loop runs n times for each iteration of the outer loop, giving us n² total prints. Thus this function runs in O(n²) time (or "quadratic time"). If the list has 10 items, we have to print 100 times. If it has 1,000 items, we have to print 1,000,000 times. 
 ```
 def print_all_possible_ordered_pairs(items):
     for first_item in items:
@@ -25,8 +50,6 @@ def print_all_possible_ordered_pairs(items):
             print first_item, second_item
 ```
             
-Here we're nesting two loops. If our list has n items, our outer loop runs n times and our inner loop runs n times for each iteration of the outer loop, giving us n² total prints. Thus this function runs in O(n²) time (or "quadratic time"). If the list has 10 items, we have to print 100 times. If it has 1,000 items, we have to print 1,000,000 times. 
-
 With 3x² + x + 1, the Big O for this equation would be O(n²) where O is just absorbing all the other fluff (including the factor on the biggest term.) Just grab the biggest term. So for n terms, it's going take us n*n time to go through our inputs. 
 
  This is O(n) because we go through all the inputs once in a loop. 
@@ -42,7 +65,7 @@ function crossAdd(input) {
 }
 ```
 
- This would be O(n²). For every input, we have to go through a full loop inside of another full loop, meaning we're doing a lot of work! This is the trick: look for loops. A loop inside of a loop inside of a loop would likewise be O(n³).
+This would be O(n²). For every input, we have to go through a full loop inside of another full loop, meaning we're doing a lot of work! This is the trick: look for loops. A loop inside of a loop inside of a loop would likewise be O(n³).
 
 If we have no loops and just do something and exit/return, then it's said we're doing it in constant time, or O(1). 
 ```
@@ -59,7 +82,10 @@ function makeTuples(input) {
 
 When you're calculating the big O complexity of something, you just throw out the constants. For big O notation we're looking at what happens as nnn gets arbitrarily large. As n gets really big, adding 100 or dividing by 2 has a decreasingly significant effect. 
 
-Drop the less significant terms 
+Drop the less significant terms.
+
+
+Here our runtime is O(n + n²), which we just call O(n²). Even if it was O(n²/2+100n), it would still be O(n²). Again, we can get away with this because the less significant terms quickly become, well, less significant as nnn gets big.
 
 ```
 def print_all_numbers_then_all_pair_sums(numbers):
@@ -73,7 +99,6 @@ def print_all_numbers_then_all_pair_sums(numbers):
             print first_number + second_number
 ```
 
-Here our runtime is O(n + n²), which we just call O(n²). Even if it was O(n²/2+100n), it would still be O(n²). Again, we can get away with this because the less significant terms quickly become, well, less significant as nnn gets big.
 
 Often this "worst case" stipulation is implied. But sometimes you can impress your interviewer by saying it explicitly.
 
@@ -149,207 +174,8 @@ function factorial(num) {
 ```
 A factorial is when you take a number n and multiply by each preceding integer until you hit one.
 
-## Sorting Algorithms
-### Bubble Sort
-One straight line, easiest to conceptualize and a natural way for the brain to think about sorting so it's typical to do bubble sort first. It's also amongst the least efficient in terms of worst case scenario. 
-
-Loop through the array and compare each index with the index next to it. If the those two numbers are out of order (the lesser index's value is greater than the greater index's value) we swap those two numbers' places in the array. We keep looping over that array until everything is in place and nothing was swapped during the last iteration. 
-
-What's the Big O? Well, there's an inner loop to check to see if indexes need to be swapped, and an outer loop that's just checking to see if anything was swapped. That would be make it O(n²). Not efficient, but a great learning tool. You'll never use bubble sort for anything serious. 
-
-```
-var bubbleSort = nums => {  
-  do {
-    var swapped = false;
-    for (var i = 0; i < nums.length; i++) {
-      snapshot(nums);
-      if (nums[i] > nums[i+1]) {
-        var temp = nums[i];
-        nums[i] = nums[i+1];
-        nums[i+1] = temp;
-        swapped = true;
-      }
-    }
-  } while(swapped);
-  snapshot(nums);
-};
-```
-
-### Insertion Sort
-Insertion sort is a step more complex but a bit more useful than bubble sort and is occasionally useful. The worst case scenario for it is similar to bubble sort's but its best case makes it suited for times when you're pretty sure a list almost sorted or likely already sorted. 
-
-We're going to start at the beginning of the list and assume we have a sorted list of length 1 where the first element is only sorted element. We're then going to grab the second element, and insert it into the correct spot in our sorted list, either the 0 index or the 1 index, depending if it's smaller or larger than our first element. We now have a sorted list of length 2. We then continue on down the line, inserting elements in our sorted side of the list as the unsorted side dwindles. 
-
-What's the Big O? There's an inner loop that goes over your sorted list to find the correct place to insert your item, and an outer loop to go over all the numbers. Two loops means O(n²). However since if your list is sorted or nearly so, it can be O(n) in a best case scenario and thus well adapted to that scenario.
-
-```
-var insertionSort = nums => {  
-  for (let i = 1; i < nums.length; i++) {
-    for (let j = 0; j < i; j++) {
-      snapshot(nums);
-      if (nums[i] < nums[j]) {
-        let spliced = nums.splice(i, 1);
-        nums.splice(j, 0, spliced[0]);
-      }
-    }
-  }
-};
-```
-
-### Merge Sort
-Merge sort is actually very useful and one of the easier divide-and-conquer algorithms to understand. A key to merge sort is that it is recursive. Take a big list, and first divide down in two half size lists and recursively call merge sort on those smaller list, which in turn will do the same. The base case is when you have a list of one, at which point you will return that sorted list of one. On the way up the recursive calls, you will merge those sorted lists together (preferably by another merge function you'll write) that walks through both lists simultaneously and inserts the smaller value first, effectively creating a bigger sorted list. 
-
-```
-[1, 5, 6] sublist 1
-[2, 7, 8] sublist 2
-
--> compare 1 and 2, take 1 and put it in new list
--> compare 5 and 2, take 2 and put it in new list
--> compare 5 and 7, take 5 and put it in new list
--> compare 6 and 7, take 6 and put it in new list
--> list one has no more elements
-   add the rest of list two in order (7 and 8)
-```
-
-This combined merge with the divide-and-conquer recursion proves to be pretty effective. When you call Array.prototype.sort it often uses MergeSort (depending on the engine and the types of the elements in the array.) MergeSort is also stable which just means if you have equivalent elements, it will keep their original order in the array. This is sometimes important and sometimes not. 
-
-Big O is O(n log n). We compare everything once, but we don't have to compare everything to everything like we do with bubble sort. Rather we just to have to compare to their local lists as we sort. Not too bad.
-
-MergeSort's space complexity is a bit worse than the previous algorithms at O(n) since we have to create new lists as we go. It's not awful but it nonetheless a consideration. 
-
-```
-const mergeSort = nums => {
-  if (nums.length < 2) {
-    return nums;
-  }
-  const length = nums.length;
-  const middle = Math.floor(length / 2);
-  const left = nums.slice(0, middle);
-  const right = nums.slice(middle);
-  
-  return merge(mergeSort(left), mergeSort(right));
-};
-
-const merge = (left, right) => {
-  
-  const results = [];
-  
-  while (left.length && right.length) {
-    
-    if (left[0] <= right[0]) {
-      results.push(left.shift());
-    }
-    else {
-      results.push(right.shift());
-    }
-  }
-  
-  return results.concat(left, right);
-};
-
-```
-
-### Quick Sort
-Quicksort is one of the most useful and powerful sorting algorithms out there, and it's not terribly difficult to conceptualize. Occasionally JavaScript doesn't mergesort for Array.prototype.sort. In those other cases, it's usually some variant on quicksort.
-
-It's another divide-and-conquer, recursive algorithm but it takes a slightly different approach. The basic gist is that you take the last element in the list and call that the pivot. Everything that's smaller than the pivot gets put into a "left" list and everything that's greater get's put in a "right" list. You then call quick sort on the left and right lists independently (hence the recursion.) After those two sorts come back, you concatenate the sorted left list, the pivot, and then the right list (in that order.) The base case is when you have a list of length 1 or 0, where you just return the list given to you. 
-```
-[4,9,3,5] list
--> 5 is made the pivot since it's the last in the array
--> divide list into two lists, [4,3] and [9]
--> call quicksort on those two lists
-
-[4, 3]
--> 3 is pivot
--> call quicksort on [] and [4]
--> those both return as is as they are the base case of length 0 or 1
--> concat [], 3, and [4]
--> return [3,4]
-
-[9]
--> returns as this it is a base case of length 1
-
-(back into the original function call)
--> call concat on [3,4], 5, and [9]
--> return [3,4,5,9]
-```
-
-Another Big O of O(n log n) but takes up less memory than mergesort so it is often favored. However it does really poorly if you pass it a sorted list. It would always have a pivot of the biggest number which defeats the effectiveness of the divide-and-conquer approach as one side will always contain all the elements. Hence not good for lists you expect may already be sorted. There are some tricks to employ to get around that like checking the beginning, middle, and end numbers and swapping them to try to get the best pivot. There are a lot of subtle variants on quicksort. 
-```
-const quickSort = nums => {
-  if (nums.length <= 1) return nums;
-  
-  const pivot = nums[nums.length-1];
-  const left = [];
-  const right = [];
-  
-  for (let i = 0; i < nums.length-1; i++) {
-    if (nums[i] < pivot) {
-      left.push(nums[i]);
-    }
-    else {
-      right.push(nums[i]);
-    }
-  }
-  return [...quickSort(left), pivot, ...quickSort(right)];
-};
-```
-
-## Data Structures - Interfaces
-### Set
-Also known as Collections depending which language you're working with. A set allows allows at least four things: add, remove, contains, and toList. The basic idea is that you can add items to a set and then later check if they're there. You can also request later a list of those items in the set (though with no guaranteed order; sets have no notion of order.) They're also useful for deduplication since you can only add something to a set once. 
-
-### Map
-Maps are quite similar to simple JavaScript objects. Maps are a set/collection of keys that have values associated with those keys. Unlike objects, they don't have prototypes, inheritance, methods, or anything of that sort. Maps are also similar to associative arrays in other languages. Again, since the keys are a set, there cannot be duplication of keys. You can have duplication of values though. Key 'thing' can have value 'map' while key 'other thing' can have a value of 'map' as well. 
-
-### Stack
-Stack is an interface that adheres to the "Last-In First-Out" (LIFO) mantra. In a stack, you can only push (add) or pop (remove.) The last thing you pushed will be what pop returns to you (pop will also remove it from the stack.) Often they'll have a method called peek too which just looks at the top value of the stack without modifying the stack. 
-
-Example Function:
-```
-function double(x) { return 2 * x; }
-function squareAndAddFive(y) { return square(y) + 5; }
-function square(z) { return z * z; }
-
-function maths(num) {
-    var answer = double(num);
-    answer = squareAndAddFive(answer);
-    return answer;
-}
-
-maths(5);
-```
-
-How it works:
-```
--> maths is called; JS pushes maths call on its call stack
--> inside maths, double is called; JS pushes double onto its call stack
--> doubles completes, returns value 10; JS pops double off its call stack
--> back inside maths, squareAndAddFive is called;
-   JS pushes squareAndAddFive on its call stack
--> inside squareAndAddFive, square is called;
-   JS pushes square on its call stack
-
-Let's look at call stack right now
-
-square
-squareAndAddFive
-maths
-main
-
--> square completes, returns 100
--> squareAndAddFive completes, returns 105
--> maths completes, returns 105
-```
-
-### Queue
-Queues adhere to the "First-In First-Out" mantra. All stacks need to have the methods enqueue (add/push) and dequeue (remove/pop). Like stacks, they'll have peek to see what the next element is to dequeue. 
-
-Queues are useful for lots of programming problems. How about print jobs? Usually you want things to print in the order sent to the printer; otherwise Janice from Accounting is going to be printing all of her documents before you can print anything.
-
-There are also priority queues as well. In a priority queue you also assign a priority to the elements that are enqueued. Items that have higher priorities get dequeued first. This is useful for networking; some packets are more important than others. If you're streaming video, that gets a high priority because getting a packet later means likely skipping some frames, whereas syncing to Dropbox can wait for a lull in network traffic to continue syncing. 
-
 ## Data Structures - Implementations
+
 ### Array List
 ArrayList is done by directly interacting with an allocated piece of memory. You then interact with that allocated piece of memory by addressing the specific indices in the array. In other words, you just treat it like a normal array. However things get a bit more complicated when deleting items from an ArrayList: you have to collapse the list down to the spot where you deleted. 
 ```
@@ -881,142 +707,210 @@ class HashTableSet {
   }
 }
  ```
-## Functional Programming
-Learning to functional program, whether you choose to adhere to its tenants going forward or not, will make you a much better programmer. It teaches you ways to structure your code to make it maintainable, compose able, and easy to reason about. 
+ 
+## Data Structures - Interfaces
 
-Key concepts, first, would be avoiding side effects. We want to minimize where we affect state. This makes our program easier to reason about because we can easily reason through individual parts of our code. If your code has a lot of state that gets modified everywhere then you have reason through your code over time instead of being able to take tiny snapshots of individual functions. A function that modifies no state and is idempotent is called a pure function. We generally want small, focused, pure functions. 
-
-Second, higher order function. Because JavaScript has functions as first-class citizens, this makes pattern possible. We can pass functions into other functions, and this pattern of composition makes for some powerful paradigms. Pure functions are important parts of higher order functions because we're going to run this functions over and over again. 
-
-Third, transforming lists of data. When you're operation exclusively on lists, it's called vector or array programming. When you're doing that, you can depend on the fact that you can take the output of one function and safely put that into the next function. We can chain calls together. Our code becomes expressive at this point. We begin describe what we want to happen rather than imperatively telling how. 
+### Set
+Also known as Collections depending which language you're working with. A set allows allows at least four things: add, remove, contains, and toList. The basic idea is that you can add items to a set and then later check if they're there. You can also request later a list of those items in the set (though with no guaranteed order; sets have no notion of order.) They're also useful for deduplication since you can only add something to a set once. 
 
 ### Map
-Map is a higher order function. That is to say it takes in another function and has its own logic on how to apply that function.
+Maps are quite similar to simple JavaScript objects. Maps are a set/collection of keys that have values associated with those keys. Unlike objects, they don't have prototypes, inheritance, methods, or anything of that sort. Maps are also similar to associative arrays in other languages. Again, since the keys are a set, there cannot be duplication of keys. You can have duplication of values though. Key 'thing' can have value 'map' while key 'other thing' can have a value of 'map' as well. 
 
-Map has similarities to forEach. It takes a function in and applies that function individually to each element in that array. Where it differs from forEach is that map creates a new array of the values returned within the function. It allows you to transform whole lists of values without modifying the original list. 
+### Stack
+Stack is an interface that adheres to the "Last-In First-Out" (LIFO) mantra. In a stack, you can only push (add) or pop (remove.) The last thing you pushed will be what pop returns to you (pop will also remove it from the stack.) Often they'll have a method called peek too which just looks at the top value of the stack without modifying the stack. 
+
+Example Function:
 ```
-const double = num => 2*num;
-const doubleEach = input => input.map( double );
+function double(x) { return 2 * x; }
+function squareAndAddFive(y) { return square(y) + 5; }
+function square(z) { return z * z; }
 
-const square = num => num*num;
-const squareEach = input => input.map( square );
+function maths(num) {
+    var answer = double(num);
+    answer = squareAndAddFive(answer);
+    return answer;
+}
 
-const doubleAndSquareEach = input => input.map(double).map(square);
+maths(5);
+```
 
-const myMap = (array, fn) => {
-  const answer = [];
-  for (let i = 0; i < array.length; i++) {
-    answer.push(fn(array[i]));
-  }
-  return answer;
+How it works:
+```
+-> maths is called; JS pushes maths call on its call stack
+-> inside maths, double is called; JS pushes double onto its call stack
+-> doubles completes, returns value 10; JS pops double off its call stack
+-> back inside maths, squareAndAddFive is called;
+   JS pushes squareAndAddFive on its call stack
+-> inside squareAndAddFive, square is called;
+   JS pushes square on its call stack
+
+Let's look at call stack right now
+
+square
+squareAndAddFive
+maths
+main
+
+-> square completes, returns 100
+-> squareAndAddFive completes, returns 105
+-> maths completes, returns 105
+```
+### Queue
+Queues adhere to the "First-In First-Out" mantra. All stacks need to have the methods enqueue (add/push) and dequeue (remove/pop). Like stacks, they'll have peek to see what the next element is to dequeue. 
+
+Queues are useful for lots of programming problems. How about print jobs? Usually you want things to print in the order sent to the printer; otherwise Janice from Accounting is going to be printing all of her documents before you can print anything.
+
+There are also priority queues as well. In a priority queue you also assign a priority to the elements that are enqueued. Items that have higher priorities get dequeued first. This is useful for networking; some packets are more important than others. If you're streaming video, that gets a high priority because getting a packet later means likely skipping some frames, whereas syncing to Dropbox can wait for a lull in network traffic to continue syncing. 
+
+## Sorting Algorithms
+
+### Bubble Sort
+One straight line, easiest to conceptualize and a natural way for the brain to think about sorting so it's typical to do bubble sort first. It's also amongst the least efficient in terms of worst case scenario. 
+
+Loop through the array and compare each index with the index next to it. If the those two numbers are out of order (the lesser index's value is greater than the greater index's value) we swap those two numbers' places in the array. We keep looping over that array until everything is in place and nothing was swapped during the last iteration. 
+
+What's the Big O? Well, there's an inner loop to check to see if indexes need to be swapped, and an outer loop that's just checking to see if anything was swapped. That would be make it O(n²). Not efficient, but a great learning tool. You'll never use bubble sort for anything serious. 
+
+```
+var bubbleSort = nums => {  
+  do {
+    var swapped = false;
+    for (var i = 0; i < nums.length; i++) {
+      snapshot(nums);
+      if (nums[i] > nums[i+1]) {
+        var temp = nums[i];
+        nums[i] = nums[i+1];
+        nums[i+1] = temp;
+        swapped = true;
+      }
+    }
+  } while(swapped);
+  snapshot(nums);
 };
 ```
 
-### Reduce
-Reduce is really useful when you a have a list of values that you want to combine in some meaningful way down to one value. You'll often hear the term map/reduce thrown around in regards to data science; they're used a lot in that sense because you're taking large sets of data, doing some transformations on them to get them in a certain state, and then reducing them down to useful statistics.
+### Insertion Sort
+Insertion sort is a step more complex but a bit more useful than bubble sort and is occasionally useful. The worst case scenario for it is similar to bubble sort's but its best case makes it suited for times when you're pretty sure a list almost sorted or likely already sorted. 
 
-A reduce function involves a list it's being called, a function that does the reducing, the accumulator, and the seed value. The accumulator is the interim value that is passed into each call of the reducer function that the function then returns. The value returned is then passed into the next call of the reducer function on the next value. The seed value is the value of the first accumulator. If there's no seed value, the zero index in the array is the seed. 
-```
-var list = ['a','b','c'];
-list.reduce(function(accumulator, letter) {
-    return accumulator + letter.toUpperCase();
-}); // returns aBC since a becomes the seed
+We're going to start at the beginning of the list and assume we have a sorted list of length 1 where the first element is only sorted element. We're then going to grab the second element, and insert it into the correct spot in our sorted list, either the 0 index or the 1 index, depending if it's smaller or larger than our first element. We now have a sorted list of length 2. We then continue on down the line, inserting elements in our sorted side of the list as the unsorted side dwindles. 
 
-list.reduce(function(accumulator, letter) {
-    return accumulator + letter.toUpperCase();
-}, ''); // returns ABC since '' starts as the seed
-```
+What's the Big O? There's an inner loop that goes over your sorted list to find the correct place to insert your item, and an outer loop to go over all the numbers. Two loops means O(n²). However since if your list is sorted or nearly so, it can be O(n) in a best case scenario and thus well adapted to that scenario.
 
 ```
-const addTogether = list => {
-  return list.reduce((acc, num) => acc+num, 0);
-};
-
-const concatenateStringsWithSpaces = list => {
-  return list.reduce((acc, string) => acc + string + " ", "");
-};
-
-const squaresAndSubtracts = list => {
-  return list
-    .map( num => num*num )
-    .reduce( (accumulator, num) => accumulator-num );
-};
-
-const myReduce = (list, fn, seed) => {
-  let answer = seed;
-  for (let i = 0; i < list.length; i++) {
-    answer = fn(answer, list[i]);
-  }
-  return answer;
-};
-```
-
-### Filter
-Filter does exactly what it sounds like: it takes a list of items and pares out some of the items you don't need in the list. All you have to do is write a filter function that returns true if you want the item to stay in the list or false if you want it removed from the list. The returned result is a new list with just the items you returned true on. 
-```
-const filterOutOdds = nums => nums.filter( num => num % 2 === 0);
-
-const filterState = (list, state) => list.filter( person => person.state === state );
-
-const showOutOfCADevs = list => {
-  return list
-    .filter( person => person.state !== 'CA')
-    .map( person => person.name.toUpperCase() )
-    .reduce( (acc, name) => `${acc}, ${name}` );
-};
-
-const myFilter = (list, fn) => {
-  const answer = [];
-  for (let i = 0; i < list.length; i++) {
-    if (fn(list[i])) {
-      answer.push(list[i]);
+var insertionSort = nums => {  
+  for (let i = 1; i < nums.length; i++) {
+    for (let j = 0; j < i; j++) {
+      snapshot(nums);
+      if (nums[i] < nums[j]) {
+        let spliced = nums.splice(i, 1);
+        nums.splice(j, 0, spliced[0]);
+      }
     }
   }
-  return answer;
 };
 ```
 
+### Merge Sort
+Merge sort is actually very useful and one of the easier divide-and-conquer algorithms to understand. A key to merge sort is that it is recursive. Take a big list, and first divide down in two half size lists and recursively call merge sort on those smaller list, which in turn will do the same. The base case is when you have a list of one, at which point you will return that sorted list of one. On the way up the recursive calls, you will merge those sorted lists together (preferably by another merge function you'll write) that walks through both lists simultaneously and inserts the smaller value first, effectively creating a bigger sorted list. 
 
-## Bloom Filters
-Bloom filters are an interesting data structure which are designed to tell you quickly and efficiently if an item is in a set. In exchange for being really fast and memory efficient, bloom filters trade off the fact that it can't tell you definitely if an item is in the set; it can only tell you definitely that item is not in the set. Stated differently, bloom filters have a false positive rate but do not have false negatives.
-
-Sometimes you don't care about false positives, you just want to make sure something is not in the set. What about that false positive rate? Well, they'll just filter out something they could have shown you and then show you something they definitely can show you. It's an acceptable trade off.
-
-Imagine you have an array with ten elements in it. Every element in the array is a 0 bit. This is an empty bloom filter. Now we want to add "George" to the array.
-
-Okay, so I run my string through three different hashing functions and they give me 2, 5, and 8. I'll flip all those bits at those indexes so my new array is [0, 0, 1, 0, 0, 1, 0, 0, 1, 0].
-
-After doing this, I'll check to see if "Sarah" is in the array. After running through the hashing function, they give 2, 2, and 4. 2 is flipped but 4 is not, so I can definitively say that "Sarah" is not in the data set.
-
-So let's add one more item to the array, "Simona". The indexes we get back 0, 4, and 5. So now our array is [1, 0, 1, 0, 1, 1, 0, 0, 1, 0]. We flip both 0 and 4 indexes and 5 was already flipped so we do nothing to it. Now what happens if we check "Sarah" again? This time we'll get a false positive that "Sarah" is in the dataset. That's why the two answers you can get back from the question "Is X in the bloom filter" are no and maybe.
-
-So when you add more items to a bloom filter, you'll increase your false positive rate. You can mitigate this by having a larger array, but you'll be trading off on having a larger memory footprint. You can also have more or less hashing functions, trading off on how quickly memory will fill up versus false positive rates.
 ```
-// Hashing functions. it's not essential to know how they work
-// a library called xxhashjs is being loaded (as XXH) and we're using three different
-// instances of that as your hashing functions
-const h1 = string => Math.abs(XXH.h32(0xABCD).update(string).digest().toNumber() % 100);
-const h2 = string => Math.abs(XXH.h32(0x1234).update(string).digest().toNumber() % 100);
-const h3 = string => Math.abs(XXH.h32(0x6789).update(string).digest().toNumber() % 100);
+[1, 5, 6] sublist 1
+[2, 7, 8] sublist 2
 
-// fill out these two methods
-// `add` adds a string to the bloom filter and returns void (nothing, undefined)
-// `check` takes a string and tells you if a string is maybe in the bloom filter
-class BloomFilter {
-  _array = new Array(100).fill(0);
-  add(string) {
-    this._array[h1(string)] = 1;
-    this._array[h2(string)] = 1;
-    this._array[h3(string)] = 1;
+-> compare 1 and 2, take 1 and put it in new list
+-> compare 5 and 2, take 2 and put it in new list
+-> compare 5 and 7, take 5 and put it in new list
+-> compare 6 and 7, take 6 and put it in new list
+-> list one has no more elements
+   add the rest of list two in order (7 and 8)
+```
+
+This combined merge with the divide-and-conquer recursion proves to be pretty effective. When you call Array.prototype.sort it often uses MergeSort (depending on the engine and the types of the elements in the array.) MergeSort is also stable which just means if you have equivalent elements, it will keep their original order in the array. This is sometimes important and sometimes not. 
+
+Big O is O(n log n). We compare everything once, but we don't have to compare everything to everything like we do with bubble sort. Rather we just to have to compare to their local lists as we sort. Not too bad.
+
+MergeSort's space complexity is a bit worse than the previous algorithms at O(n) since we have to create new lists as we go. It's not awful but it nonetheless a consideration. 
+
+```
+const mergeSort = nums => {
+  if (nums.length < 2) {
+    return nums;
   }
-  contains(string) {
-    return !!(this._array[h1(string)] && this._array[h2(string)] && this._array[h3(string)]);
+  const length = nums.length;
+  const middle = Math.floor(length / 2);
+  const left = nums.slice(0, middle);
+  const right = nums.slice(middle);
+  
+  return merge(mergeSort(left), mergeSort(right));
+};
+
+const merge = (left, right) => {
+  
+  const results = [];
+  
+  while (left.length && right.length) {
+    
+    if (left[0] <= right[0]) {
+      results.push(left.shift());
+    }
+    else {
+      results.push(right.shift());
+    }
   }
+  
+  return results.concat(left, right);
+};
+
+```
+
+### Quick Sort
+Quicksort is one of the most useful and powerful sorting algorithms out there, and it's not terribly difficult to conceptualize. Occasionally JavaScript doesn't mergesort for Array.prototype.sort. In those other cases, it's usually some variant on quicksort.
+
+It's another divide-and-conquer, recursive algorithm but it takes a slightly different approach. The basic gist is that you take the last element in the list and call that the pivot. Everything that's smaller than the pivot gets put into a "left" list and everything that's greater get's put in a "right" list. You then call quick sort on the left and right lists independently (hence the recursion.) After those two sorts come back, you concatenate the sorted left list, the pivot, and then the right list (in that order.) The base case is when you have a list of length 1 or 0, where you just return the list given to you. 
+```
+[4,9,3,5] list
+-> 5 is made the pivot since it's the last in the array
+-> divide list into two lists, [4,3] and [9]
+-> call quicksort on those two lists
+
+[4, 3]
+-> 3 is pivot
+-> call quicksort on [] and [4]
+-> those both return as is as they are the base case of length 0 or 1
+-> concat [], 3, and [4]
+-> return [3,4]
+
+[9]
+-> returns as this it is a base case of length 1
+
+(back into the original function call)
+-> call concat on [3,4], 5, and [9]
+-> return [3,4,5,9]
+```
+
+Another Big O of O(n log n) but takes up less memory than mergesort so it is often favored. However it does really poorly if you pass it a sorted list. It would always have a pivot of the biggest number which defeats the effectiveness of the divide-and-conquer approach as one side will always contain all the elements. Hence not good for lists you expect may already be sorted. There are some tricks to employ to get around that like checking the beginning, middle, and end numbers and swapping them to try to get the best pivot. There are a lot of subtle variants on quicksort. 
+```
+const quickSort = nums => {
+  if (nums.length <= 1) return nums;
+  
+  const pivot = nums[nums.length-1];
+  const left = [];
+  const right = [];
+  
+  for (let i = 0; i < nums.length-1; i++) {
+    if (nums[i] < pivot) {
+      left.push(nums[i]);
+    }
+    else {
+      right.push(nums[i]);
+    }
+  }
+  return [...quickSort(left), pivot, ...quickSort(right)];
 };
 ```
+
 ## Tree Traversals
 Trees are an essential part of storing data, or at computer scientists like to refer them as, data structures. Among their benefits is that they're optimized to be searchable. Occasionally you need to serialize the entire tree into a flat data structure. 
-
 
 ### Depth-first Traversal
 One variant depth-first traversals: pre-order traversal. The basic gist is that for each of the nodes, you process the node (in our case, save it to an array since we're serializing this tree,) then process the left subtree and then the right tree.
@@ -1100,426 +994,3 @@ const breadthFirstTraverse2 = (queue, array) => {
 }
 ```
 Breadth-first traversals are useful for many things, the gist of when you use them is that you know the answer for what you're looking for is "closer" to the root node as opposed to far away when you would use depth-first. Again, it's all trade-offs.
-
-## Graphs
-Graphs are all about modeling relations between many items. For example, think of Facebook's Social Graph. I'm friends with you and you're friends with me. But you're also friends with six hundred other people which is about five hundred fifty too many. Those people in turn also have too friends. But many of my friends are your friends, so the connections aren't linear, they're … well, they're graph-like.
-
-In the Facebook example, each person would be a node. A node represents some entity, much like a row in an SQL database. Every so-called "friendship" would be called an edge. An edge represents some connection between two items. In this case, our Facebook friendship is bidirectional: if I'm friends with you then you're friends with me. Twitter would be an example of a unidirectional edge: just because I follow you doesn't mean you follow me.
-
-Graphs are everywhere. Your various social networks, your Internet of Things devices that have relationships with each other, your neural-networks machine-learning libraries, everywhere. As we continue to model more-and-more of the natural world in virtual space graphs become ever-more important since relationships between things and beings exist all around us.
-
-```
-// you work for a professional social network. in this social network, a professional
-// can follow other people to see their updates (think Twitter for professionals.)
-// write a function that finds the job `title` that shows up most frequently given
-// a set of degree of separation from you. count the initial id's own job title in the total
-
-/*
-  parameters:
-  myId                - number    - the id of the user who is the root node
-  getUser             - function - a function that returns a user's object given an ID
-  degreesOfSeparation - number   - how many degrees of separation away to look on the graph
-*/
-
-const findMostCommonTitle = (myId, getUser, degreesOfSeparation) => {
-  let queue = [myId];
-  const seen = new Set();
-  const jobs = {};
-  
-  for (let i = 0; i <= degreesOfSeparation; i++) {
-    queue = queue
-      .filter((id) => !seen.has(id))
-      .map(getUser)
-      .map(user => {
-        jobs[user.title] = jobs[user.title] ? jobs[user.title] + 1 : 1;
-        seen.add(user.id)
-        return user;
-      })
-      .map((user) => user.connections)
-      .reduce((acc, users) => acc.concat(users), [])
-  }
-  return Object.keys(jobs)
-    .map((job) => [job, jobs[job]])
-    .sort((a, b) => {
-      if (a[1] > b[1]) return -1;
-      if (a[1] < b[1]) return 1;
-      return 0;
-    })[0][0]
-}
-```
-## Tries
-The word "trie" is a play on the fact that this particular data structure makes it easy to retrieve data, so trie is said just like it is there, tree. However, because tries and trees are often discussed together, you'll here people call them "tries" (as in the plural try) or try to disambiguate them in other methods. 
-
-It's a tree that's optimized for searching by prefix. The classic example of what you would use this for is autocomplete: you know when you type in "San" and it offers suggestions of what to finish with like "Francisco", "Diego", or "Jose". Tries are really useful for that.
-
-A trie starts with a root node that doesn't represent anything (often it's given the value of '' (empty string.) It has a bunch of child nodes (as many are necessary) that represent one letter, the first letter of all the words added to the data structure. Each of those letter-nodes will have children nodes for all the second letters of the words that are represented in the data structure. So on and so forth, there will be a chain of nodes that represent each letter in the data structure.
-
-If a user types bo in the text input, you can go through your data structure, find the o node in that chain, and then all you have to do is a depth-first traversal of the children nodes to for a list of autocomplete suggestions.
-```
-  a – [various children]
- /
-b – o – s – t – o – n
-     \
-      i – s – e
-```
-So based on this, you'd get suggestions of "Boston" and "Boise".
-
-Since some words are contained within chains of others (for example, there are two separate cities, one called "Salina" and one called "Salinas" or "Sandy" and "Sandy Springs".) You'll often have a flag in there that signifies the node you're on is a complete word so you can just add it to the list and then keep going on the children.
-
-There are more complicated things you can do with tries as well that we won't explore here. You can have autocompletes for mid-word completions (if I type "francisco" it won't autocomplete "san francisco" at the moment.) You can add weights to certain edges/children so they're suggested first (so San Francisco comes before San Mateo.) But this exercise, assume all words weighted equally.
-
-You'll also represent a space in the tree as its own node so when you type san<space> it autocompletes San Francisco instead of Santa Fe. In other words, no characters are given special treatment. That can be unintuitve.
-```
- class Node {
-  children = [];
-  value = "";
-  terminus = false;
-  constructor(string) {
-    this.value = string[0] || "";
-    if (string.length > 1) {
-      this.children.push(new Node(string.substr(1)));
-    } else {
-      this.terminus = true;
-    }
-  }
-  add(string) {
-    const value = string[0];
-    const next = string.substr(1);
-    for (let i = 0; i < this.children.length; i++) {
-      const child = this.children[i];
-      if (child.value === value) {
-        if (next) {
-          child.add(next);
-        } else {
-          child.terminus = true;
-        }
-        return;
-      }
-    }
-
-    this.children.push(new Node(string));
-  }
-  _complete(search, built, suggestions) {
-    if (suggestions.length >= 3 || (search && search[0] !== this.value)) {
-      return suggestions;
-    }
-
-    if (this.terminus) {
-      suggestions.push(`${built}${this.value}`);
-    }
-
-    this.children.forEach(child =>
-      child._complete(search.substr(1), `${built}${this.value}`, suggestions)
-    );
-
-    return suggestions;
-  }
-
-  complete(string) {
-    return this.children
-      .map(child => child._complete(string, "", []))
-      .reduce((acc, item) => acc.concat(item));
-  }
-}
-
-const createTrie = words => {
-  const root = new Node("");
-  words.forEach(word => root.add(word.toLowerCase()));
-  return root;
-};
-```
-
-## Searching for an Element in an Array
-This very similar to sorting, as you'll quickly figure out. Search is the act of looking for a particular element in an array.
-
-There are essentially two common ways of doing search: linear search and binary search. The former is the simplest code and really only useful if the list you're searching on is not sorted in any way. You just go through from 0 to the length of the array and ask "is the is the element I'm looking for?" No frills here. Its complexity is O(n).
-
-Binary search is a bit more interesting. It only works if the array is already sorted. To explain it, let's take the example of how you find a name in a telephone book (if you even know what that is anymore!) A telephone book is a sorted list of names. You'll open the book more or less to the middle (or say you do, for argument's sake.) From there, if the name you're looking for is smaller/earlier in the alphabet, you'll go halfway to the smaller/earlier side of the book, and so-on-and-so-forth, keeping going halfway until eventually you land on the name you're looking for. Let's see how that works in practice.
-```
-0, 5, 10, 12, 15, 19, 21, 22, 24, 30]
-
-search for 12
-
-start in the middle, is 19 === 12? no, smaller, go left
-
-look in the middle of the smaller half, 10 === 12? no, larger, go right
-
-look in the middle of the larger half (which is now just one number), is 12 === 12? yes, found element
-```
-
-This turns out to work quickly even on extremely large datasets. Its complexity is O(log n).
-
-```
-function linearSearch(id, array) {
-  for (let i = 0; i < array.length; i++) {
-    if (id === array[i].id) {
-      return array[i];
-    }
-  }
-  return void 0;
-}
-
-function binarySearch(id, array) {
-  let min = 0;
-  let max = array.length - 1;
-  let index;
-  let element;
-
-  while (min <= max) {
-    index = Math.floor((min + max) / 2);
-    element = array[index];
-
-    if (element.id < id) {
-      min = index + 1;
-    } else if (element.id > id) {
-      max = index - 1;
-    } else {
-      return element;
-    }
-  }
-
-  return void 0;
-}
-```
-
-## Heap Sort
-A heap is an array that represents a tree data structure and has to be sorted in a particular way to represent that tree. Priority queues are often represented as heaps and often those two terms are used interchangeably even if the the priority queue is implemented a different way.
-
-Once you construct a heap, removing an item from it is done in constant time since you need to find the next largest node to move to the root. This process is typically called heapify. In order to construct a max heap, you run heapify starting at the middle of the array and work backwards to the root. You don't need to do it from the end because heapify will inherently look at those nodes.
-
-So the process of heapsort is:
-* Make the array a max heap
-* Loop over the array, dequeuing the root node (which will give you the largest item) and swapping that with last item in the array
-* After dequeuing each item, run heapify again (same function we used to create the heap) once to find the next root node
-* Next loop you'll dequeue the root node and swap it with the second-to-last item in the array and run heapify again.
-* Once you've run out of items to dequeue, you have a sorted array! Let's see what that looks like.
-
-```
-// initial array
-[5, 3, 2, 10, 1, 9, 8, 6, 4, 7]
-
-// heapify the array
-start at index 5, value 9
-its left child is at index 11 and right 12, out of bounds
-nothing to do, next iteration
-
-i-- index 4, value 1
-left child is index 9 value 7, right child is index 10, out of bounds
-7 is larger than 1, swap left child and parent
-[5, 3, 2, 10, 7, 9, 8, 6, 4, 1]
-call heapify on index 9, does nothing
-
-i-- index 3, value 10
-left child is index 7 value 6, right child is index 8 value 4
-neither is larger than 10
-nothing to do, next iteration
-
-i-- index 2, value 2
-left child is index 5 value 9, right child is index 6 value 8
-9 is the largest number, swap with parent
-[5, 3, 9, 10, 7, 2, 8, 6, 4, 1]
-call heapify on index 5, does nothing
-
-i-- index 1, value 3
-left child is index 3 value 10, right child is index 4 value 7
-10 is in the largest number, swap with parent
-[5, 10, 9, 3, 7, 2, 8, 6, 4, 1]
-call heapify on index 3
-left child is index 7 value 6, right child is index 8 value 4
-6 is larger, swap with parent
-[5, 10, 9, 6, 7, 2, 8, 3, 4, 1]
-call heapify on index 7, does nothing
-
-i-- index 0, value 5
-left child is index 1 value 10, right child is index 2 value 9
-10 is in the largest number, swap with parent
-[10, 5, 9, 6, 7, 2, 8, 3, 4, 1]
-call heapify on index 1
-left child is index 3 value 6, right child is index 4 value 7
-7 is larger, swap with parent
-[10, 7, 9, 6, 5, 2, 8, 3, 4, 1]
-call heapify on index 4
-left child is index 9 value 1, right child is index 10, out of bounds
-parent is larger, does nothing
-```
-
-Now our array is officially a heap. Now we can begin dequeuing items and sorting our array.
-
-```
-Swap 10 and 1
-[1, 7, 9, 6, 5, 2, 8, 3, 4, 10]
-call heapify on index 0
-left child is index 1 value 7, right child is index 2 value 9
-9 is the larger, swap with parent
-[9, 7, 1, 6, 5, 2, 8, 3, 4, 10]
-call heapify on index 2
-left child is index 5 value 2, right child is index 6 value 8
-8 is larger, swap with parent
-[9, 7, 8, 6, 5, 2, 1, 3, 4, 10]
-call heapifiy on index 6, does nothing since children are out of bounds
-
-Swap 9 and 4
-[4, 7, 8, 6, 5, 2, 1, 3, 9, 10]
-call heapify on index 0
-
-Continue swapping the first element (the root) and last element of the heap
-and then call heapify on element 0
-After all these iterations, the array will be sorted
-```
-
-Example:
-```
-const heapSort = (array) => {
-  snapshot(array);
-  array = createMaxHeap(array);
-  let heapSize = array.length;
-  let temp;
-  for (let i = array.length - 1; i > 0; i--) {
-    temp = array[0];
-    array[0] = array[i];
-    array[i] = temp;
-    heapSize--;
-    heapify(array, 0, heapSize);
-  }
-  snapshot(array);
-  return array;
-}
-
-const createMaxHeap = (array) => {
-  for (let i = Math.floor(array.length / 2); i >= 0; i--) {
-    heapify(array, i, array.length);
-  }
-  return array;
-}
-
-const heapify = (array, index, heapSize) => {
-  const left = 2 * index + 1;
-  const right = 2 * index + 2;
-  
-  let largestValueIndex = index;
-  
-  if (heapSize > left && array[largestValueIndex] < array[left]) {
-    largestValueIndex = left;
-  }
-  
-  if (heapSize > right && array[largestValueIndex] < array[right]) {
-    largestValueIndex = right;
-  }
-  
-  if (largestValueIndex !== index) {
-    const temp = array[index];
-    array[index] = array[largestValueIndex];
-    array[largestValueIndex] = temp;
-    heapify(array, largestValueIndex, heapSize);
-    snapshot(array);
-  }
-}
-```
-
-## Radix Sort
-Radix sorting is non-comparison based sorting. Up to this point all of the sorts have been comparison based sorts. That is to say, we decide the order of the numbers based on asking the question is this element bigger than that one over-and-over again until numbers are in order and the rest of the algorithm is just optimizing how often we ask that question. The big O of these comparison based algorithms cannot be any faster n log n so in order to get beyond that, we have to change what we're doing. We have to sort based on other criteria.
-
-Enter non-comparison based algorithms. There are a few variations but radix sort is one of the more useful algorithms. The basic idea is we're to enqueue each number in different queues based on what the last digit in the digit of the number (the "ones" place.) Once we do that, we'll dequeue each queue in order back into the original array. If you think about it, it'll everything will be sorted up to the the ones place. So your array will look like [10, 1, 52, 102, 33, 45, 6, 18, 9] or something like that. Notice all the ones places are in ascending order; just nothing else is. After we've done this, we'll repeate the process again but with the tens place. With the former example, it'd look like [1, 102, 6, 9, 10, 18, 33, 45, 52]. Lastly we'll do the process on the hundreds place (which in this example is just going to be the 0 bucket and the 1 bucket) and end up with [1, 6, 9, 10, 18, 33, 45, 52, 102]. That's it! It's sorted.
-
-```
-function getDigit (number, place, longestNumber) {
-  const string = number.toString();
-  const size = string.length;
-  
-  const mod = longestNumber - size;
-  return string[place - mod] || 0;
-}
-
-function findLongestNumber(array) {
-  let longest = 0;
-  for (let i = 0; i < array.length; i++) {
-    const currentLength = array[i].toString().length;
-    longest = currentLength > longest ? currentLength : longest;
-  }
-  return longest;
-}
-
-function radixSort(array) {
-  snapshot(array);
-  const longestNumber = findLongestNumber(array);
-  
-  const buckets = new Array(10).fill().map(() => []); // make an array of 10 arrays
-  
-  for (let i = longestNumber - 1; i >= 0; i--) {
-    while (array.length) {
-      const current = array.shift();
-      buckets[getDigit(current, i, longestNumber)].push(current);
-    }
-    
-    for (let j = 0; j < 10; j++) {
-      while (buckets[j].length) {
-        array.push(buckets[j].shift());
-      }
-    }
-    snapshot(array);
-  }
-  
-  return array;
-}
-```
-
-## Programming
-### Elements of Programming
-Computer language is not just a way of computer to perform operations but rather that it is a novel formal medium for expressing ideasabout methodology. Programs must be written for people to read, and only incidentally for machines to execute. 
-
-Every powerful language has three mechanisms:
-* primitive expressions and statements, which represent the simplest building blocks that the language provides,
-* means of combination, by which compound elements are built from simpler ones, and
-* means of abstraction, by which compound elements can be named and manipulated as units.
-
-In programming, we deal with two kinds of elements: functions and data. Informally, data is stuff that we want to manipulate, and functions describe the rules for manipulating the data. Thus, any powerful programming language should be able to describe primitive data and primitive functions, as well as have some methods for combining and abstracting both functions and data.
-
-## Computer Systems - A Programmer’s Perspective 
-Programs  are  translated  by  other  programs  into  different  forms,  beginning  as ASCII text and then translated by compilers and linkers into binary executablefiles. Processors read and interpret binary instructions that are stored in main mem-ory.
-
-The operating system kernel serves as an intermediary between the applica-tion and the hardware. It provides three fundamental abstractions: (1) Files areabstractions for I/O devices. (2) Virtual memory is an abstraction for both mainmemory and disks. (3) Processes are abstractions for the processor, main memory,and I/O devices.
-
-Rather than accessing individual bits in memory, most computers use blocks of 8 bits, or bytes, as the smallest addressable unit of memory. A machine-level program views memory as a very large array of bytes, referred to as virtual memory. Every byte of memory is identified by a unique number, known as its address, and the set of all possible addresses is known as the virtual address space.
-
-Computers encode information as bits, generally organized as sequences of bytes. Different encodings are used for representing integers, real numbers, and character strings. Different models of computers use different conventions for encoding numbers and for ordering the bytes within multi-byte data. The advantage of 64-bit pro-grams is that they can go beyond the 4 GB address limitation of 32-bit programs.
-
-Computers execute machine code, sequences of bytes encoding the low-level operations that manipulate data, manage memory, read and write data on storage devices, and communicate over networks. A compiler generates machinecode through a series of stages, based on the rules of the programming language, the instruction set of the target machine, and the conventions followed by the operating system.
-
-When programming in a high-level language such as C, and even more so in Java, we are shielded from the detailed machine-level implementation of our program. In contrast, when writing programs in assembly code (as was done in the early days of computing) a programmer must specify the low-level instructions the program uses to carry out a computation.
-
-Linking is the process of collecting and combining various pieces of code and data into a single file that can be loaded (copied) into memory and executed. Linking can be performed atcompile time,  when the source code is translatedinto machine code; at load time, when the program is loaded into memory and executed by the loader; and even at run time, by application programs. 
-
-On modern systems, linking is performed automatically by programs called linkers. Linkers play a crucial role in software development  because they enable separate compilation. Instead of organizing a large application as one monolithic source file, we can decompose it into smaller, more manageable modules that can be modified and compiled separately. When we change one of these modules, we simply recompile it and relink the application, without having to recompile the other files.
-
-## Designing Data-Intensive Applications
-### Data Models and Query Languages
-Data  models are perhaps the  most important  part of developing software, because they have such a profound effect: not only on how the software is written, but also on how we think about the problem that we are solving.
-
-The best-known data model today is probably that of SQL, based on the relational model proposed by Edgar Codd in 1971: data is  organized into relations (called tables in SQL), where each relation is an unordered collection of tuples (rows in SQL).
-
-Much of what you see on the web today is still powered by relational databases, be it online publishing, discussion, social  networking, ecommerce, games, software-as-a-service productivity applications, or much more.
-
-If the data in your application has a document-like structure (i.e.,  a  tree  of  one-to-many relationships, where typically the entire tree is loaded at once), then it’s probably a good idea to use a document model. The relational technique of shredding—splitting  a document-like structure into multiple tables (like positions, education, and contact_info) can lead to cumbersome schemas and unnecessarily complicated application code.
-
-When the relational model was introduced, it included a new way of querying data: SQL is a declarative query language, whereas IMS and  CODASYL queried the data‐base using imperative code. 
-
-An imperative language tells the computer to perform certain operations in a certain order. You can imagine stepping through the code line by line, evaluating conditions,updating variables, and deciding whether to go around the loop one more time.
-
-```
-function getSharks() {
-var sharks = [];
- for (var i = 0; i < animals.length; i++) {
-   if (animals[i].family === "Sharks") {  
-    sharks.push(animals[i]);
-     }    
-    }
-   return sharks;
- }
-```
-
-In a declarative query language, like SQL or relational algebra, you just specify the pattern of the data you want what conditions the  results must meet, and how you want the data to be transformed (e.g., sorted, grouped, and aggregated) but not how to achieve that goal. It is up to the database system’s query optimizer to decide which indexes and which join methods to use, and in which order to execute various partsof the query.
-```
-SELECT * FROM animalsWHERE family = 'Sharks';
-```
-
-A declarative query language is attractive because it is typically more concise and eas‐ier to work with than an imperative API. But more importantly, it also hides implementation details of the database engine, which makes it possible for the database system to introduce performance improvements without requiring any changes to queries.
