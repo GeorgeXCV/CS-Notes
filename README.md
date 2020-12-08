@@ -28,6 +28,8 @@
 Big O is the way we analyze how efficient algorithms. We can model how much time any function is going to take given n inputs, but in reality we're interested in the order of magnitude of the number and necessarily of the exact figure.
 Only care about huge difference, if function is 300ms vs 330 ms, whatever. But 500ms vs 30 seconds is huge. We ignore the little parts and concentrate on the big parts.
 
+Log = logarithm. How many of one number do we multiply to get another number? 2 × 2 × 2 = 8, logarithm is 3
+
 This function runs in O(1) time (or "constant time") relative to its input. The input list could be 1 item or 1,000 items, but this function would still just require one "step." 
 ```
 def print_first_item(items):
