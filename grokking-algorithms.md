@@ -3,10 +3,13 @@
 - [Recursion](#recursion)
 - [Stack](#stack)
 - [NP Complete](#np-complete)
+- [Map Function](#Map)
+- [Reduce Function](#Reduce)
 - [Arrays](#arrays)
 - [Linked Lists](#linked-lists)
 - [Hash Tables](#hash-tables)
 - [Graphs](#graphs)
+- [Trees](#trees)
 - [Binary Search](#binary-search)
 - [Selection Sort](#selection-sort)
 - [Divide & Conquer](#divide-&-conquer)
@@ -16,7 +19,8 @@
 - [Greedy Algorithm](#greedy-algorithm)
 - [Dynamic Programming](#dynamic-programming)
 - [K-nearest Neighbors](#k-nearest-neighbors)
-
+- [Bloom Filters](#bloom-filters)
+- [HyperLogLog](#hyperloglog)
 
 ## Big O
 Big O notation is special notation that tells you how fast an algorithm is. Big O doesn’t tell you the speed in seconds. Big O notation lets you compare the number of operations (n). It tells you how fast the algorithm grows. Big O notation is awalys about the worst-case scenario.
@@ -64,6 +68,12 @@ Here are some giveaways:
 •  If your problem involves a set (like a set of radio stations) and it’s hard to solve, it might be NP-complete.
 •  Can you restate your problem as the set-covering problem or the traveling-salesperson problem? Then your problem is deinitely  NP-complete.
 
+## Map
+The map function is simple: it takes an array and applies the same function to each item in the array. 
+
+## Reduce
+The idea is that you “reduce” a whole list of items down to one item. With map, you go from one array to another. With reduce, you transform an array to a single item.
+
 # Data Structures
 
 ## Arrays
@@ -96,6 +106,13 @@ In the average case, hash tables take O(1) for everything. O(1) is called consta
 
 ## Graphs
 A graph models a set of connections. Gaphs are made up of nodes and edges (connection). A node can be directly connected to many other nodes. Those nodes are called its neighbors. Graphs are a way to model how diferent things are connected to one another. 
+
+## Trees
+For every node, the nodes to its let are smaller in value, and the nodes to the right are larger in value. 
+
+Searching for an element in a binary search tree takes O(log n) time on average and O(n) time in the worst case. 
+
+A binary search tree is a lot faster for insertions and deletions on average. But you don't get random access.
 
 # Algorithims
 
@@ -190,3 +207,17 @@ Once you can graph users, you can measure the distance between them. Here’s ho
 These are the two basic things you’ll do with KNN—classiication and regression:
 • Classiication = categorization into a group
 • Regression = predicting a response (like a number)
+
+## Bloom Filters
+Suppose you’re running Reddit. When someone posts a link, you want to see if it’s been posted before. Stories that haven’t been posted before are considered more valuable. So you need to igure out whether this link has been posted before.
+
+Hash tables work but no good if the data set is very large.
+
+Bloom filters ofer a solution. Bloom filters are probabilistic data structures. They give you an answer that could be wrong but is probably correct. Instead of a hash, you can ask your bloom filter if you’ve crawled this URL before. A hash table would give you an accurate answer. A bloom filter will give you an answer that’s probably correct.
+
+Bloom filters are great because they take up very little space. A hash table would have to store every URL crawled by Google, but a bloom filter doesn’t have to do that. They’re great when you don’t need an exact answer.
+
+## HyperLogLog
+Along the same lines is another algorithm called HyperLogLog. Suppose Google wants to count the number of unique searches performed by its users. Or suppose Amazon wants to count the number of unique items that users looked at today. Answering these questions takes a lot of space! With Google, you’d have to keep a log of all the unique searches. When a user searches for something, you have to see whether it’s already in the log. If not, you have to add it to the log. Even for a single day, this log would be massive! 
+
+HyperLogLog approximates the number of unique elements in a set. Just like bloom filters, it won’t give you an exact answer, but it comes very close and uses only a fraction of the memory a task like this would otherwise take.
