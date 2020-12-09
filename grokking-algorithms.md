@@ -1,5 +1,7 @@
 # Grokking Algorithms
-- [Big](#big-o)
+- [Big O](#big-o)
+- [Recursion](#recursion)
+- [Stack](#Stack)
 - [Arrays](#arrays)
 - [Linked Lists](#linked-lists)
 - [Binary Search](#binary-search)
@@ -14,6 +16,27 @@ Here are ive Big O run times that you’ll encounter a lot, sorted from fastest 
 • O(n* log n). Example: A fast sorting algorithm, like quicksort.
 • O(n2). Example: A slow sorting algorithm, like selection sort. 
 • O(n!). Example: A really slow algorithm, like the traveling salesperson.
+
+## Recursion
+Where a function calls itself. Recursion is used when it makes the solution clearer. There’s no performance beneit to using recursion; in fact, loops are sometimes better for performance. Loops may achieve a performance gain for your program. Recursion may achieve a performance gain for your programmer. Choose which is more important in your situation!
+
+When you write a recursive function, you have to tell it when to stop recursing. That’s why every recursive function has two parts: the base case, and the recursive case. The recursive case is when the function calls itself. The base case is when the function doesn’t call itself again ... so it doesn’t go into an infinite loop.
+
+```
+def countdow n(i):  
+  print i
+  if i <= 0: // Base case    
+    return
+  else: // Recursive case    
+    countdow n(i-1)
+```
+
+## Stack
+When you insert an item, it gets added to the top of the list. When you read an item, you only read the topmost item, and it’s taken of the list. So your todo list has only two actions: push (insert) and pop (remove and read). 
+
+Your computer uses a stack internally called the call stack. When you call a function from another function, the calling function is paused in a partially completed state.
+
+All function calls go onto the call stack. The call stack can get very large, which takes up a lot of memory.
 
 ## Arrays
 Each item is next to each other memory, great for when you want to access random elements as you can lookup any position instantly. 
