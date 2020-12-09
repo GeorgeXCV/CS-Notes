@@ -2,6 +2,7 @@
 - [Big O](#big-o)
 - [Recursion](#recursion)
 - [Stack](#stack)
+- [NP Complete](#np-complete)
 - [Arrays](#arrays)
 - [Linked Lists](#linked-lists)
 - [Hash Tables](#hash-tables)
@@ -12,6 +13,10 @@
 - [Quick Sort](#quick-sort)
 - [Breadth-First Search](#breadth-first-search)
 - [Dijkstra’s algorithm](#dijkstra’s-algorithm)
+- [Greedy Algorithm](#greedy-algorithm)
+- [Dynamic Programming](#dynamic-programming)
+- [K-nearest Neighbors](#k-nearest-neighbors)
+
 
 ## Big O
 Big O notation is special notation that tells you how fast an algorithm is. Big O doesn’t tell you the speed in seconds. Big O notation lets you compare the number of operations (n). It tells you how fast the algorithm grows. Big O notation is awalys about the worst-case scenario.
@@ -43,6 +48,21 @@ When you insert an item, it gets added to the top of the list. When you read an 
 Your computer uses a stack internally called the call stack. When you call a function from another function, the calling function is paused in a partially completed state.
 
 All function calls go onto the call stack. The call stack can get very large, which takes up a lot of memory.
+
+## NP Complete
+Some problems are famously hard to solve e.g. Travelling Salesperson.
+
+It’s nice to know if the problem you’re trying to solve is NP-complete. At that point, you can stop trying to solve it perfectly, and solve it using an approximation algorithm instead. 
+
+It can be hard to tell if a problem is NP-complete. Usually there’s a very small diference between a problem that’s easy to solve and an NP-complete problem. No easy way to tell.
+
+Here are some giveaways:
+• Your algorithm runs quickly with a handful of items but really slows down with more items.
+•  “All combinations of X” usually point to an NP-complete problem.
+•  Do you have to calculate “every possible version” of X because you can’t break it down into smaller sub-problems? Might be  NP-complete.
+•  If your problem involves a sequence (such as a sequence of cities, like traveling salesperson), and it’s hard to solve, it might be NP-complete.
+•  If your problem involves a set (like a set of radio stations) and it’s hard to solve, it might be NP-complete.
+•  Can you restate your problem as the set-covering problem or the traveling-salesperson problem? Then your problem is deinitely  NP-complete.
 
 # Data Structures
 
@@ -137,3 +157,36 @@ When you work with Dijkstra’s algorithm, each edge in the graph has a number a
 A graph with weights is called a weighted graph. A graph without weights is called an unweighted graph.
 
 Dijkstra’s algorithm is used to calculate the shortest path for a weighted graph.
+
+## Greedy Algorithm
+A greedy algorithm is simple: at each step, pick the optimal move. In this case, each time you pick a class, you pick the class that ends the soonest. In technical terms: at each step you pick the locally optimal solution, and in the end you’re left with the globally optimal solution.
+
+Obviously, greedy algorithms don’t always work. But they’re simple to write! 
+
+Sometimes, perfect is the enemy of good. Sometimes all you need is an algorithm that solves the problem pretty well. And that’s where greedy algorithms shine, because they’re simple to write and usually get pretty close.
+
+## Dynamic Programming
+Dynamic programming starts by solving subproblems and builds up to solving the big problem.
+
+Every dynamic-programming algorithm starts with a grid. 
+
+Dynamic programming is powerful because it can solve subproblems and use those answers to solve the big problem. Dynamic programming only works when each subproblem is discrete—when it doesn’t depend on other subproblems.
+
+Dynamic programming is useful when you’re trying to optimize something given a constraint. 
+
+## K-nearest Neighbors
+The KNN algorithm is simple but useful! If you’re trying to classify something, you might want to try KNN first. 
+
+Suppose you’re Netlix, and you want to build a movie recommendations system for your users. 
+
+You can plot every user on a graph. These users are plotted by similarity, so users with similar taste are plotted closer together. Suppose you want to recommend movies for Sarah. Find the five users closest to her.
+
+Once you have this graph, building a recommendations system is easy. If X likes a movie, recommend it to Sarah.
+
+Suppose you’re comparing Netlix users, instead. You need some way to graph the users. So, you need to convert each user to a set of coordinates, just as you did for fruit.
+
+Once you can graph users, you can measure the distance between them. Here’s how you can convert users into a set of numbers. When users sign up for Netlix, have them rate some categories of movies based on how much they like those categories. For each user, you now have a set of ratings!
+
+These are the two basic things you’ll do with KNN—classiication and regression:
+• Classiication = categorization into a group
+• Regression = predicting a response (like a number)
