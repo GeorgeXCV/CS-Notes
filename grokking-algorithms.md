@@ -1,7 +1,7 @@
 # Grokking Algorithms
 - [Big O](#big-o)
 - [Recursion](#recursion)
-- [Stack](#Stack)
+- [Stack](#stack)
 - [Arrays](#arrays)
 - [Linked Lists](#linked-lists)
 - [Hash Tables](#hash-tables)
@@ -11,6 +11,7 @@
 - [Divide & Conquer](#divide-&-conquer)
 - [Quick Sort](#quick-sort)
 - [Breadth-First Search](#breadth-first-search)
+- [Dijkstra’s algorithm](#dijkstra’s-algorithm)
 
 ## Big O
 Big O notation is special notation that tells you how fast an algorithm is. Big O doesn’t tell you the speed in seconds. Big O notation lets you compare the number of operations (n). It tells you how fast the algorithm grows. Big O notation is awalys about the worst-case scenario.
@@ -119,3 +120,20 @@ There are two steps:
 Two questions that breadth-first search can answer for you:
 • Question type 1: Is there a path from node A to node B? (Is there a mango seller in your network?)
 • Question type 2: What is the shortest path from node A to node B? (Who is the closest mango seller?)
+
+Breadth-irst search is used to calculate the shortest path for an unweighted graph.
+
+## Dijkstra’s algorithm
+Shortest path is not necessarily the fastest, this finds the fastest.
+
+There are four steps to Dijkstra’s algorithm:
+1. Find the “cheapest” node. This is the node you can get to in the least amount of time.
+2. Check whether there’s a cheaper path to the neighbors of this node. If so, update their costs.
+3. Repeat until you’ve done this for every node in the graph.
+4. Calculate the final path.
+
+When you work with Dijkstra’s algorithm, each edge in the graph has a number associated with it. These are called weights.
+
+A graph with weights is called a weighted graph. A graph without weights is called an unweighted graph.
+
+Dijkstra’s algorithm is used to calculate the shortest path for a weighted graph.
