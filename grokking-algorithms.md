@@ -4,8 +4,11 @@
 - [Stack](#Stack)
 - [Arrays](#arrays)
 - [Linked Lists](#linked-lists)
+- [Hash Tables](#hash-tables)
 - [Binary Search](#binary-search)
-- [Selection sort](#selection-sort)
+- [Selection Sort](#selection-sort)
+- [Divide & Conquer](#divide-&-conquer)
+- [Quick Sort](#quick-sort)
 
 ## Big O
 Big O notation is special notation that tells you how fast an algorithm is. Big O doesn’t tell you the speed in seconds. Big O notation lets you compare the number of operations (n). It tells you how fast the algorithm grows. Big O notation is awalys about the worst-case scenario.
@@ -38,6 +41,8 @@ Your computer uses a stack internally called the call stack. When you call a fun
 
 All function calls go onto the call stack. The call stack can get very large, which takes up a lot of memory.
 
+# Data Structures
+
 ## Arrays
 Each item is next to each other memory, great for when you want to access random elements as you can lookup any position instantly. 
 
@@ -52,6 +57,22 @@ Lists are better if you want to insert items into the middle.
 
 Lists are better if you want to delete, because you just need to change what the previous element points to. With arrays, everything needs to be moved up when you delete an element.
 
+## Hash Tables
+A hash function is a function where you put in a string and you get back a number. It maps strings to numbers. You use them to make a Hash Table.
+
+The hash function tells you exactly where the value is stored, so you don’t have to search at all! Put a hash function and an array together, and you get a data structure called a hash table.
+
+They’re also known as hash maps, maps, dictionaries, and associative arrays.
+
+Hash tables are great when you want to:
+• Create a mapping from one thing to another thing e.g. Name and Phone Number
+• Look something up
+• Filter out duplicates
+
+In the average case, hash tables take O(1) for everything. O(1) is called constant time. It means the time taken will stay the same, regardless of how  big the hash table is.
+
+# Algorithims
+
 ## Binary Search
 Its input is a sorted list of elements. If an element you’re looking for is in that list, binary search returns the position where it’s located. 
 Otherwise, binary search returns null. 
@@ -60,6 +81,8 @@ In general, for any list of n, binary search will take log2n steps to run in the
 
 If the list is 100 items long, it takes at most 7 guesses. If the list is 4 billion items, it takes at most 32 guesses. 
 Binary search runs in logarithmic time (log time).
+
+A hash table has keys and values. A hash table maps keys to values.
 
 ## Selection Sort
 You want to sort most played songs, you go through list, get most played item and add to new list, repeat for each song. To find the song with the highest play count, you have to check each item in the list. This takes O(n) time, as you just saw. So you have an operation that takes O(n) time, and you have to do that n times:
@@ -70,3 +93,14 @@ Sorting algorithms are very useful. You can sort:
 • Names in a phone book
 • Travel dates
 • Emails (newest to oldest)
+
+## Divide & Conquer
+D&C algorithms are recursive algorithms. To solve a problem using D&C, there are two steps:
+1. Figure out the base case. This should be the simplest possible case.
+2. Divide or decrease your problem until it becomes the base case.
+
+D&C works by breaking a problem down into smaller and smaller pieces. If you’re using D&C on a list, the base case is probably an empty array or an array with one element.
+
+
+## Quick Sort
+A sorting algorithm much faster than selection sort. If you’re implementing quicksort, choose a random element as the pivot. The average runtime of quicksort is O(n log n)!
