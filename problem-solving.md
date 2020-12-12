@@ -33,3 +33,6 @@ Creating a window which can either be an array or number from one position to an
 Depending on a certain condition, the window either increases or closes (and a new window is created).
 
 Very useful for keeping track of a subset of data in an array/string etc.
+
+## Divide and Conquer
+This pattern involves dividing a data set into smaller chunks and then repeating the process with a small subset of data. Binary search in the middle of data set is an example.
