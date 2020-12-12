@@ -21,7 +21,6 @@ function bubbleSort(arr){
   return arr;
 }
 
-bubbleSort([8,1,2,3,4,5,6,7]);
 ```
 
 ## Selection Sort
@@ -45,5 +44,22 @@ function selectionSort(arr) {
   return arr;
 }
 
-selectionSort([0,2,34,22,10,19,17]);
 ```
+
+## Insertion Sort
+Builds up the sort by gradually creating a larger left half which is always sorted.
+
+```
+function insertionSort(arr){
+	var currentVal;
+    for(var i = 1; i < arr.length; i++){
+        currentVal = arr[i];
+        for(var j = i - 1; j >= 0 && arr[j] > currentVal; j--) {
+            arr[j+1] = arr[j]
+        }
+        arr[j+1] = currentVal;
+    }
+    return arr;
+}
+```
+
