@@ -323,3 +323,84 @@ class DoublyLinkedList{
     
 }
 ```
+
+## Stacks
+The last element added to a stack is going to be the first one to be removed.
+
+Used for managing function invocations (the call stack), and undo/redo.
+
+They are not a built in data structure in JavaScript.
+
+## Queue
+First In First Out, just like an actual queue. 
+
+## Trees
+Consists of nodes in a parent/child relationship.
+
+Binary Trees are used to compare values.
+
+Only two parent nodes.
+
+Every node to the left of a parent node is always less than the parent.
+
+Every node to the right of a parent node is always greater than the parent.
+
+```
+class Node {
+    constructor(value) {
+        this.value = valuie;
+        this.left = null;
+        this.right = null;
+    }
+}
+
+class BinarySearchTree {
+      constructor() {
+          this.root = null;
+      }
+      
+      insert(value) {
+          var newNode = new Node(value);
+          if (this.root === null) {
+              this.root = newNode;
+              return this;
+          } else {
+              var current = this.root;
+              while (true) {
+                 if (value === curent.value) return undefined;
+                 if (value < current.value) {
+                      if (current.left === null) {
+                          current.left = newNode;
+                          return this;
+                      } else {
+                          current = current.left;
+                      }
+                 } else if (value > current.value) {
+                        if (current.right === null) {
+                            current.right = newNode;
+                            return this;
+                        } else {
+                            current = current.right;
+                        }
+                   }
+              }
+          }
+      }
+      
+      find (value) {
+          if (this.root === null) return false;
+          var current = this.root;
+          var found = false;
+          while (current && !found) {
+                if (value < current.value) {
+                    current = current.left;
+                } else if (value > current.value) {
+                    current = current.right;
+                } else {
+                    return true;
+                }
+          }
+          return false;
+      }
+}
+```
