@@ -335,15 +335,11 @@ They are not a built in data structure in JavaScript.
 First In First Out, just like an actual queue. 
 
 ## Trees
-Consists of nodes in a parent/child relationship.
+Trees are non-linear data structures that contain root and child nodes.
 
-Binary Trees are used to compare values.
+Binary Trees can have values of any type, but at most two children for each parent. Are used to compare values.
 
-Only two parent nodes.
-
-Every node to the left of a parent node is always less than the parent.
-
-Every node to the right of a parent node is always greater than the parent.
+Binary Search Trees are a more specific version of Binary Tres where ever node to the left of a parent node is always less than the parent and every node to the right of a parent node is always greater than the parent.
 
 ```
 class Node {
@@ -403,4 +399,75 @@ class BinarySearchTree {
           return false;
       }
 }
+```
+
+## Breadth First Search
+Search each element left to right, don't drop level until all checked above.
+
+```
+  breadthFirstSearch() {
+      var data = [];
+      var queue = [];
+      var node = this.root;
+      queue.push(node);
+      while (queue.length) {
+            node = queue.shift()
+            data.push(node.value);
+            if (node.left) queue.push(node.left);
+            if (node.right) queue.push(node.right);
+      }
+      return data;
+  }
+```
+
+## Depth First Search
+Traverse all nodes downwards until moving to the right.
+
+```
+  depthFirstSearchPreOrder() {
+       var data = [];
+       function traverse(node) {
+          data.push(node.value);
+          if(node.left) traverse(node.left);
+          if(node.right) traverse(node.right);
+       }
+       traverse(this.root);
+       return data;
+  }
+```
+
+## Depth First Post Order
+Root is the last thing thats visited.
+
+For any node, we visit all children before the node, still left to right.
+
+```
+  depthFirstSearchPostOrder() {
+      var data =[];
+      function traverse(node) {
+          if(node.left) traverse(node.left);
+          if(node.right) traverse (node.right);
+          data.push(node.value);  
+       }
+       traverse(this.root);
+       return data;
+      }
+  }
+```
+
+## Depth First Search - In Order
+Entire left side starting from bottom, then to root, then to right.
+
+```
+depthFirstSearchInOrder() {
+      var data =[];
+      function traverse(node) {
+          if(node.left) traverse(node.left);
+          data.push(node.value);  
+          if(node.right) traverse (node.right);
+       }
+       traverse(this.root);
+       return data;
+      }
+  }
 ```
