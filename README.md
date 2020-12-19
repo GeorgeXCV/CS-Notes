@@ -914,30 +914,45 @@ const quickSort = nums => {
 ## Tree Traversals
 Trees are an essential part of storing data, or at computer scientists like to refer them as, data structures. Among their benefits is that they're optimized to be searchable. Occasionally you need to serialize the entire tree into a flat data structure. 
 
-### Depth-first Traversal
-One variant depth-first traversals: pre-order traversal. The basic gist is that for each of the nodes, you process the node (in our case, save it to an array since we're serializing this tree,) then process the left subtree and then the right tree.
+### Depth-first Traversal 
+![Image of Tree](https://media.geeksforgeeks.org/wp-content/cdn-uploads/2009/06/tree12.gif)
 
-We end up with the array of [8, 3, 1, 6, 4, 7, 10, 14, 13]. This is called preorder traversal.
+(a) Inorder (Left, Root, Right) : 4 2 5 1 3
 
-The other variants are quite similar; the only thing we do is change the order. "process the node," mean you do whatever operation you're going to do: add it to an array, copy the node, or whatever that may be.
+(b) Preorder (Root, Left, Right) : 1 2 4 5 3
 
-In preorder traversal, you process the node, then recursively call the method on the left subtree and then the right subtree.
+(c) Postorder (Left, Right, Root) : 4 5 2 3 1
 
-In inorder traversal, you first recursively call the method on the left tree, then process the node, and then call the method on the right tree.
+Breadth First or Level Order Traversal : 1 2 3 4 5
 
-Postorder traversal, as you have guessed, you recursively call the method on the left subtree, then the left subtree, then you process the node. The results of these are as follows:
+### Inorder Traversal
 ```
-// preorder
-[8, 3, 1, 6, 4, 7, 10, 14, 13]
+Algorithm Inorder(tree)
+   1. Traverse the left subtree, i.e., call Inorder(left-subtree)
+   2. Visit the root.
+   3. Traverse the right subtree, i.e., call Inorder(right-subtree)
+```
+In case of binary search trees (BST), Inorder traversal gives nodes in non-decreasing order. To get nodes of BST in non-increasing order, a variation of Inorder traversal where Inorder traversal s reversed can be used.
 
-// inorder
-[1, 3, 5, 6, 7, 8, 10, 13, 14]
-
-// postorder
-[1, 4, 7, 6, 3, 13, 14, 10, 8]
+```
+const inorderTraverse = (node, array) => {
+  if (!node) return array;
+  array = inorderTraverse(node.left, array);
+  array.push(node.value);
+  array = inorderTraverse(node.right, array);
+  return array;
+};
 ```
 
-For a sorted list out of a BST, you'd want to use inorder. If you're making a deep copy of a tree, preorder traversal is super useful since you'd copy a node, and then add its left child and then its right tree. Postorder would be useful if you're deleting a tree since you'd process the left tree, then the right, and only after the children had been deleted would you delete the node you're working on.
+### Preorder Traversal
+```
+Algorithm Preorder(tree)
+   1. Visit the root.
+   2. Traverse the left subtree, i.e., call Preorder(left-subtree)
+   3. Traverse the right subtree, i.e., call Preorder(right-subtree) 
+```
+Preorder traversal is used to create a copy of the tree. Preorder traversal is also used to get prefix expression on of an expression tree
+
 ```
 const preorderTraverse = (node, array) => {
   if (!node) return array;
@@ -946,15 +961,18 @@ const preorderTraverse = (node, array) => {
   array = preorderTraverse(node.right, array);
   return array;
 };
+```
 
-const inorderTraverse = (node, array) => {
-  if (!node) return array;
-  array = inorderTraverse(node.left, array);
-  array.push(node.value);
-  array = inorderTraverse(node.right, array);
-  return array;
-};
+### Postorder Traversal
+```
+Algorithm Postorder(tree)
+   1. Traverse the left subtree, i.e., call Postorder(left-subtree)
+   2. Traverse the right subtree, i.e., call Postorder(right-subtree)
+   3. Visit the root.
+```
+Postorder traversal is used to delete the tree.  Postorder traversal is also useful to get the postfix expression of an expression tree.
 
+```
 const postorderTraverse = (node, array) => {
   if (!node) return array;
   array = postorderTraverse(node.left, array);
@@ -965,7 +983,7 @@ const postorderTraverse = (node, array) => {
 ```
 
 ### Breadth-first Traversal
-Now that you've done depth-first, let's tackle breadth-first. Breadth-first isn't recursive processing of subtrees like depth-first. Instead we want to process one layer at a time. Using the tree above, we want the resulting order to [8, 3, 10, 1, 6, 14, 4, 7, 13]. In other words, we start at the root, and slowly make our way "down" the tree.
+Breadth-first isn't recursive processing of subtrees like depth-first. Instead we want to process one layer at a time. We start at the root, and slowly make our way "down" the tree.
 
 The way we accomplish this is using the queue. 
 
