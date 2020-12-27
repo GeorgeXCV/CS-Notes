@@ -23,6 +23,7 @@
 - [Merge Sort](#merge-sort)
 - [Quick Sort](#quick-sort)
 - [Tree Traversals](#tree-traversals)
+- [Binary Search](#binary-search)
 
 ## Big O
 Big O is the way we analyze how efficient algorithms. We can model how much time any function is going to take given n inputs, but in reality we're interested in the order of magnitude of the number and necessarily of the exact figure.
@@ -1014,3 +1015,14 @@ const breadthFirstTraverse2 = (queue, array) => {
 }
 ```
 Breadth-first traversals are useful for many things, the gist of when you use them is that you know the answer for what you're looking for is "closer" to the root node as opposed to far away when you would use depth-first. Again, it's all trade-offs.
+
+## Binary Search
+Binary Search is an algorithm that divides the search space in 2 after every comparison. Binary Search should be considered every time you need to search for an index or element in a collection. If the collection is unordered, we can always sort it first before applying Binary Search.
+
+Binary Search is generally composed of 3 main sections:
+
+    Pre-processing - Sort if collection is unsorted.
+
+    Binary Search - Using a loop or recursion to divide search space in half after each comparison.
+
+    Post-processing - Determine viable candidates in the remaining space.
