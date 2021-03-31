@@ -200,3 +200,68 @@ Look towards NoSQL databases when you need to scale fast. And when do you genera
 When there are a large number of read-write operations on your website & when dealing with a large amount of data, NoSQL databases fit best in these scenarios. Since they have the ability to add nodes on the fly, they can handle more concurrent traffic & big amount of data with minimal latency.
 
 The second cue is during the initial phases of development when you are not sure about the data model, the database design, things are expected to change at a rapid pace. NoSQL databases offer us more flexibility.
+
+### Document Orientated Databases
+Document Oriented databases are the main types of NoSQL databases. They store data in a document-oriented model in independent documents. The data is generally semi-structured & stored in a JSON-like format.
+
+Some of the popular document-oriented stores used in the industry are MongoDB, CouchDB, OrientDB, Google Cloud Datastore, Amazon Document DB.
+
+If you are working with semi-structured data, need a flexible schema which would change often. You ain’t sure about the database schema when you start writing the app. There is a possibility that things might change over time. You are in need of something flexible which you could change over time with minimum fuss. Pick a Document-Oriented data store.
+
+### Graph Database
+Graph databases are also a part of the NoSQL database family. They store data in nodes/vertices and edges in the form of relationships.
+
+Each Node in a graph database represents an entity. It can be a person, a place, a business etc. And the Edge represents the relationship between the entities.
+
+Primarily, two reasons. The first is visualization. Think of that pinned board in the thriller detective movies where the pins are pinned on a board over several images connected via threads. It does help in visualizing how the entities are related & how things fit together. Right?
+
+The second reason is the low latency. In graph databases, the relationships are stored a bit differently from how the relational databases store relationships.
+
+Graph databases are faster as the relationships in them are not calculated at the query time, as it happens with the help of joins in the relational databases. Rather the relationships here are persisted in the data store in the form of edges and we just have to fetch them. No need to run any sort of computation at the query time.
+
+A good real-life example of an application which would fit a graph database is Google Maps. Nodes represent the cities and the Edges represent the connection between them.
+
+Now, if I have to look for roads between different cities, I don’t need joins to figure out the relationship between the cities when I run the query. I just need to fetch the edges which are already stored in the database.
+
+Ideal use cases of graph databases are building social, knowledge, network graphs. Writing AI-based apps, recommendation engines, fraud analysis app, storing genetic data etc.
+
+### Key Value Database
+Key-value databases also are a part of the NoSQL family. These databases use a simple key-value method to store and quickly fetch the data with minimum latency.
+
+A primary use case of a Key-value database is to implement caching in applications due to the minimum latency they ensure.
+
+The Key serves as a unique identifier and has a value associated with it. The value can be as simple as a block of text & can be as complex as an object graph.
+
+The data in Key-value databases can be fetched in constant time O(1), there is no query language required to fetch the data. It’s just a simple no-brainer fetch operation. This ensures minimum latency.
+
+Some of the popular key-value data stores used in the industry are Redis, Hazelcast, Riak, Voldemort & Memcache.
+
+If you have a use case where you need to fetch data real fast with minimum fuss & backend processing then you should pick a key-value data store.
+
+Key-value stores are pretty efficient in pulling off scenarios where super-fast data fetch is the order of the day.
+
+Typical use cases of a key value database are the following:
+* Caching
+* Persisting user state
+* Persisting user sessions
+* Managing real-time data
+* Implementing queues
+* Creating leaderboards in online games & web apps
+* Implementing a pub-sub system
+
+## Caching
+Caching is key to the performance of any kind of application. It ensures low latency and high throughput. An application with caching will certainly do better than an application without caching, simply because it returns the response in less time as opposed to the application without a cache implemented.
+
+Implementing caching in a web application simply means copying frequently accessed data from the database which is disk-based hardware and storing it in RAM Random Access Memory hardware.
+
+Across the architecture of our application, we can use caching at multiple places. Caching is used in the client browser to cache static data. It is used with the database to intercept all the data requests, in the REST API implementation etc.
+
+Besides these places, I would suggest you to look for patterns. We can always cache the frequently accessed content on our website, be it from any component. There is no need to compute stuff over and over when it can be cached.
+
+## Message Queue
+Follows the FIFO (First in First Out) policy. The message that is sent first is delivered first. Though messages do have a priority attached with them that makes the queue a priority queue but for now let’s keep things simple.
+
+### Publish Subscribe Model
+A Publish-Subscribe model is the model where multiple consumers receive the same message sent from a single or multiple producers.
+
+To implement the pub-sub pattern, message queues have exchanges which further push the messages to the queues based on the exchange type and the rules which are set. Exchanges are just like telephone exchanges which route messages from sender to the receiver through the infrastructure based on a certain logic.
