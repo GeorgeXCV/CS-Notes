@@ -265,3 +265,107 @@ Follows the FIFO (First in First Out) policy. The message that is sent first is 
 A Publish-Subscribe model is the model where multiple consumers receive the same message sent from a single or multiple producers.
 
 To implement the pub-sub pattern, message queues have exchanges which further push the messages to the queues based on the exchange type and the rules which are set. Exchanges are just like telephone exchanges which route messages from sender to the receiver through the infrastructure based on a certain logic.
+
+## Stream Processing
+Data can be ingested using both the real-time & the batch approach.
+
+The data streaming into the system is heterogenous in nature & has to be converted into a standardized format. This conversion of data is a tedious process. It takes a lot of computing resources & time.
+
+### Lambda Architecture
+Lambda is a distributed data processing architecture that leverages both the batch & the real-time streaming data processing approaches to tackle the latency issues arising out of the batch processing approach. It joins the results from both the approaches before presenting it to the end user.
+
+### Kappa Architecture
+In Kappa architecture, all the data flows through a single data streaming pipeline as opposed to the Lambda architecture which has different data streaming layers that converge into one.
+
+Kappa contains only two layers. Speed, which is the streaming processing layer, & the Serving which is the final layer.
+
+Kappa is not an alternative for Lambda. Both the architectures have their use cases.
+
+Kappa is preferred if the batch and the streaming analytics results are fairly identical in a system. Lambda is preferred if they are not.
+
+## Event Driven Architecture
+There are generally two kinds of processes in applications CPU intensive & IO intensive. IO in the context of web applications means events. A large number of IO operations mean a lot of events occurring over a period of time. And an event can be anything from a tweet to a click of a button, an HTTP request, an ingested message, a change in the value of a variable etc.
+
+Non-blocking architecture is also known as the Reactive or the Event-driven architecture. Event-driven architectures are pretty popular in the modern web application development.
+
+Technologies like NodeJS, frameworks in the Java ecosystem like Play, Akka.io are non-blocking in nature and are built for modern high IO scalable applications.
+
+They are capable of handling a big number of concurrent connections with minimal resource consumption. Modern applications need a fully asynchronous model to scale. These modern web frameworks provide more reliable behaviour in a distributed environment. They are built to run on a cluster, handle large scale concurrent scenarios, tackle problems which generally occur in a clustered environment. They enable us to write code without worrying about handling multi-threads, thread lock, out of memory issues due to high IO etc.
+
+Coming back to the Event-driven reactive architecture. It simply means reacting to the events occurring regularly. The code is written to react to the events as opposed to sequentially moving through the lines of codes.
+
+Event-driven architecture is all about processing asynchronous data streams. The application becomes inherently asynchronous.
+
+NodeJS is a single-threaded non-blocking framework written to handle more IO intensive tasks. It has an event loop architecture. 
+
+NodeJS is not fit for CPU intensive tasks. CPU intensive operations are operations that require a good amount of computational power like for graphics rendering, running ML algorithms, handling data in enterprise systems etc. It would be a mistake to pick NodeJS for these purposes.
+
+### Web Hooks
+WebHooks are more like call-backs. It’s like I will call you when new information is available. You carry on with your work.
+
+WebHooks enable communication between two services without a middleware. They have an event-based mechanism.
+
+To use the Webhooks, consumers register an HTTP endpoint with the service with a unique API Key. It’s like a phone number. Call me on this number, when an event occurs. I won’t call you anymore.
+
+Whenever the new information is available on the backend. The server fires an HTTP event to all the registered endpoints of the consumers, notifying them of the new update.
+
+### Peer to Peer Architecture
+P2P architecture is the base of blockchain tech. We’ve all used it at some point in our lives to download files via torrent. 
+
+A P2P network is a network in which computers also known as nodes can communicate with each other without the need of a central server. The absence of a central server rules out the possibility of a single point of failure. All the computers in the network have equal rights. A node acts as a seeder and a leecher at the same time. So, even if some of the computers/nodes go down, the network & the communication is still up.
+
+I want you to think of a messaging app. When two users communicate, the first user sends a message from his device, the message moves on the server of the organization hosting the messaging service, from there the message is routed to the destination, that is, the device of the user receiving the message.
+
+The server of the organization is the central server. These systems are also known as Centralized systems.
+
+The central server has access to all your messages. It can read it, share it with its associates, laugh about it and so on. So, communication is not really secure. Even though the businesses say that the entire message pipeline is encrypted and stuff. But still, data breaches happen, governments get access to our data. Data is sold to third parties for fat profits
+
+Fortunately, P2P networks are resilient to all these scenarios, due to their design. They have a Decentralized architecture.
+
+Nobody has control over your data, nobody has the power to delete your data as all the participating nodes in a P2P network have equal rights. During a zombie apocalypse when the huge corporation servers would be dead or on fire, we can still communicate with each other via a peer to peer connection.
+
+## Picking Right Server Side Technology
+
+### Real-time Data Interaction
+If you are building an app that needs to interact with the backend server in real-time like stream data to & fro. For instance, a messaging application, a real-time browser-based massive multiplayer game, a real-time collaborative text editor or an audio-video streaming app like Spotify, Netflix etc.
+
+You need a persistent connection between the client and server, also you need a non-blocking technology on the back-end. We’ve already talked about both the concepts in detail.
+
+Some of the popular technologies which enable us to write these apps are NodeJS, Python has a framework called Tornado. If you are working in the Java Ecosystem you can look into Spring Reactor, Play, Akka.io.
+
+### Peer to Peer Web Application
+If you intend to build a peer to peer web app, for instance, a P2P distributed search engine or a P2P Live TV radio service, something similar to LiveStation by Microsoft.
+
+Look into JavaScript, protocols like DAT, IPFS. Checkout FreedomJS, it’s a framework for building P2P web apps that work in the modern web browsers.
+
+### CRUD (Regular Application)
+If you have simple use cases such as a regular CRUD-based app like online movie booking portal, a tax filing app etc.
+
+CRUD (Create Read Update Delete) is the most common form of web apps being built today by businesses. Be it an online booking portal, an app collecting user data or a social site etc. all have an MVC (Model View Controller) architecture on the backend.
+
+Though the view part is tweaked a little with the rise of UI frameworks by React, Angular, Vue etc. The Model View Controller pattern stays.
+
+Some of the popular technologies which help us implement these use cases are Spring MVC, Python Django, Ruby on Rails, PHP Laravel, ASP .NET MVC.
+
+### CPU & Memory Intensive Applications 
+Do you need to run CPU Intensive, Memory Intensive, heavy computational tasks on the backend such as Big Data Processing, Parallel Processing, Running Monitoring & Analytics on quite a large amount of data?
+
+Performance is critical in systems running tasks which are CPU & Memory intensive. Handling massive amounts of data has its costs. A system with high latency & memory consumption can blow up the economy of a tech company.
+
+Also, regular web frameworks & scripting languages are not meant for number crunching.
+
+Tech commonly used in the industry to write performant, scalable, distributed systems are –
+
+C++, it has features that facilitate low-level memory manipulation. Provides more control over memory to the developers when writing distributed systems. Majority of the cryptocurrencies are written using this language.
+
+Rust is a programming language similar to C++. It is built for high performance and safe concurrency. It’s gaining a lot of popularity lately amongst the developer circles.
+
+Java, Scala & Erlang are also a good pick. Most of the large scale enterprise systems are written in Java.
+
+Elastic search an open-source real-time search and analytics engine is written in Java.
+
+Erlang is a functional programming language with built-in support for concurrency, fault-tolerance & distribution. It facilitates the development of massively scalable systems. This is a good read on Erlang
+
+Go is a programming language by Google to write apps for multi-core machines & handling a large amount of data.
+
+Julia is a dynamically programmed language built for high performance & running computations & numerical analytics.
